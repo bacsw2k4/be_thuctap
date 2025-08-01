@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.header {
+    background-color: #007EC6;
+    display: flex;
+    height: 75px;
+}
+
+.header h2 {
+    color: #FFFFFF;
+    font-size: 40px;
+    padding-left: 42px;
+    width: 158px;
+    height: 48px;
+    padding-top: 15px;
+    font-weight: 700;
+    line-height: 100%;
+    font-family: 'Noto Sans JP';
+}
+
+.header p {
+    width: 240px;
+    height: 29px;
+    color: #FFFFFF;
+    font-size: 24px;
+    margin-top: 20px;
+    margin-left: 60px;
+    font-weight: 400px;
+    font-family: 'Noto Sans JP';
+
+}
+
+.content {
+    text-align: center;
+    padding-top: 250px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding-top: 51px;
+}
+
+.content h1 {
+    color: #007EC6;
+    width: 541px;
+    height: 82px;
+    font-size: 56px;
+    font-family: 'Noto Sans JP';
+    font-weight: 700;
+    line-height: 100%;
+    margin: 0 auto;
+}
+
+.form-group {
+    position: relative;
+    width: 475px;
+    height: 43px;
+    display: flex;
+
+
+}
+
+span {
+    position: absolute;
+    color: #BD0101;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Noto Sans JP';
+    padding-top: 4px;
+    padding-left: 3px;
+}
+
+.form-group label {
+    padding-top: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Noto Sans JP';
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.login {
+    background-color: #007EC6;
+    color: white;
+    width: 161px;
+    height: 50px;
+    margin-left: 164px;
+    margin-right: 22px;
+    border: 1px solid #FFFFFFDE;
+    border-radius: 4px;
+    font-family: 'Noto Sans JP';
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.clear {
+    background-color: #E2005C;
+    color: white;
+    width: 156px;
+    height: 50px;
+    border: 1px solid #FFFFFFDE;
+    margin-right: 30px;
+    border-radius: 4px;
+    gap: 4px;
+    font-family: 'Noto Sans JP';
+    font-weight: 700;
+    font-size: 16px;
+}
+
+#form input {
+    padding-top: 3px;
+    width: 342px;
+    height: 40px;
+    right: 0;
+    position: absolute;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.label-password {
+    margin-left: 32px;
+}
+
+.button {
+    margin-top: 30px;
+    margin-right: 150px;
+    margin-left: 150px;
+}
+
+.alert-danger-empty div {
+    color: #F90A0A;
+    font-size: 14px;
+    font-family: 'Noto Sans JP';
+    font-weight: 400;
+    margin-left: 130px;
+
+}
