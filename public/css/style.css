@@ -31,6 +31,8 @@ body {
     height: 75px;
     position: fixed;
     width: 100%;
+    left: 0;
+    top: 0;
 
 }
 
@@ -60,15 +62,15 @@ body {
 
 .content {
     display: flex;
+    margin-top: 75px;
 }
 
 .content-left {
     width: 269px;
-    height: 948px;
+    min-height: calc(100vh - 74px);
     border-radius: 4px;
     position: fixed;
     padding-top: 10px;
-    margin-top: 77px;
     box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.3);
 }
 
@@ -94,8 +96,9 @@ body {
 
 .content-right {
     margin-left: 269px;
-    margin-top: 75px;
     width: 100%;
+    min-height: calc(100vh - 74px);
+    box-sizing: border-box;
 }
 
 .table-dashboard {
@@ -104,8 +107,13 @@ body {
     border-spacing: 0px;
     background: white;
     margin-left: 48px;
-    margin-top: 43px;
-    margin-right: 46px;
+    margin-top: 42px;
+    margin-bottom: 42px;
+
+}
+
+.input-error {
+    border: 1px solid #FF0000 !important;
 }
 
 .table-dashboard th,
@@ -262,7 +270,7 @@ td {
 
 .pagination {
     display: flex;
-    margin-top: 20px;
+    margin-bottom: 42px;
     margin-left: 42px;
     gap: 17px
 }
@@ -373,6 +381,7 @@ td {
 
 .form-adduser-group {
     width: 613px;
+    height: 80px;
 }
 
 .form-adduser-group div {
@@ -415,7 +424,7 @@ td {
 
 .btn-adduser-group {
     padding-left: 15px;
-    padding-top: 100px;
+    padding-top: 50px;
     height: 114px;
 }
 

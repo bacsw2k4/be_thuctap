@@ -18,12 +18,14 @@
             <div class="content-left">
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=dashboard/showDashboard" style=" background-color: #007EC6;
     color: white;">Dashboard</a></div>
-                <div><a href="">Quản lý người dùng</a></div>
+                <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=users/showListUser">Quản lý người dùng</a>
+                </div>
                 <div><a href="">Quản lý đơn</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=auth/logout">Đăng xuất</a></div>
             </div>
             <div class="content-right">
                 <table class="table-dashboard">
+                    <?php if (count($data['letters']) > 0): ?>
                     <thead>
                         <tr>
                             <th>STT</th>
@@ -37,20 +39,22 @@
                     </thead>
                     <tbody>
                         <?php $i = 1;
-                        foreach ($data['letters'] as $letter): ?>
+                            foreach ($data['letters'] as $letter): ?>
                         <tr>
                             <td><?php echo $i++ ?></td>
                             <td><?php echo $letter['fullName'] ?></td>
                             <td><?php echo $letter['categoryLetter'] ?></td>
                             <td><?php echo $letter['createdAt'] ?></td>
-                            <td><?php echo $letter['status'] ?></td>
+                            <td class="bold"><?php echo $letter['status'] ?></td>
                             <td><?php echo $letter['approvalDate'] ?></td>
-                            <td><?php echo $letter['content'] ?></td>
+                            <td class="bold"><?php echo $letter['content'] ?></td>
                         </tr>
                         <?php endforeach; ?>
-
                     </tbody>
                 </table>
+                <?php else: ?>
+                <div>No letters found</div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -151,3 +151,7 @@ span {
     margin-left: 130px;
 
 }
+
+.input-error {
+    border: 1px solid #FF0000 !important;
+}
