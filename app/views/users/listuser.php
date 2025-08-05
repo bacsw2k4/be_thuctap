@@ -19,20 +19,23 @@
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=dashboard/showDashboard">Dashboard</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=users/showListUser" style=" background-color: #007EC6;
     color: white;">Quản lý người dùng</a></div>
-                <div><a href="listletters.html">Quản lý đơn</a></div>
+                <div><a href="">Quản lý đơn</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=auth/logout">Đăng xuất</a></div>
             </div>
             <div class="content-right">
                 <div class="header-content-right">
                     <div class="search">
-                        <form method="post" action="">
+                        <form method="GET" action="">
                             <label>Mã/Tên user</label>
-                            <input type="search" placeholder="Value" name="search">
+                            <input placeholder="Value" name="url" hidden value="users/showListUser">
+                            <input type="search" placeholder="Value" name="search"
+                                value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ?>">
                             <button type="submit" class="btn-search" style="cursor: pointer;">Tìm Kiếm</button>
                         </form>
                     </div>
                     <div class="action">
-                        <a href="adduser.html"><button class="btn-add" style="cursor: pointer;">Thêm mới</button></a>
+                        <a href="<?php echo BASE_URL ?>/public/index.php?url=users/addUser"><button class="btn-add"
+                                style="cursor: pointer;">Thêm mới</button></a>
                         <a><button class="btn-deletemore" style="cursor: pointer;" id="delete-selected">Xóa
                                 nhiều</button></a>
                     </div>
@@ -64,7 +67,7 @@
                             </tr>
                         </thead>
                         <tbody id="table-body">
-                            <?php $i = 1;
+                            <?php
                             foreach ($data['users'] as $user) : ?>
                             <tr>
                                 <td>
@@ -83,7 +86,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td><?php echo $i++ ?></td>
+                                <td><?php echo $user['userId'] ?></td>
                                 <td><?php echo $user['fullName'] ?></td>
                                 <td><?php echo $user['createdAt'] ?></td>
                                 <td><?php echo $user['status'] ?></td>

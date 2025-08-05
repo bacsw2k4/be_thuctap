@@ -591,9 +591,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     padding: 20px;
 }
 
-.popup-header p {
+.popup-header>p {
     color: #FFFFFF;
     font-size: 24px;
+    padding-top: 0px !important;
     font-family: 'Noto Sans JP';
     font-weight: 400;
 }
