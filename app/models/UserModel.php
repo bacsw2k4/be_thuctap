@@ -6,15 +6,37 @@ class UserModel
     {
         $this->db = new Database();
     }
-    public function getAllUser()
+    public function getAllUser($search, $limit, $offset)
     {
-        $this->db->query('SELECT userId,fullName,createdAt,status FROM user');
-        $this->db->execute();
-        $users = $this->db->fetchall();
-        if ($users) {
-            return $users;
+        if ($search && is_numeric($search)) {
+            $this->db->query("SELECT * FROM user WHERE userId = ? LIMIT ? OFFSET ?");
+            $this->db->execute([$search, $limit, $offset]);
+            $users = $this->db->fetchAll();
+
+            $this->db->query("SELECT COUNT(*) AS total FROM user WHERE userId = ?");
+            $this->db->execute([$search]);
+            $total = $this->db->fetch()['total'];
+        } elseif ($search) {
+            $this->db->query("SELECT * FROM user WHERE fullName LIKE ? LIMIT ? OFFSET ?");
+            $this->db->execute(["%$search%", $limit, $offset]);
+            $users = $this->db->fetchAll();
+
+            $this->db->query("SELECT COUNT(*) AS total FROM user WHERE fullName LIKE ?");
+            $this->db->execute(["%$search%"]);
+            $total = $this->db->fetch()['total'];
+        } else {
+            $this->db->query("SELECT * FROM user LIMIT ? OFFSET ?");
+            $this->db->execute([$limit, $offset]);
+            $users = $this->db->fetchAll();
+
+            $this->db->query("SELECT COUNT(*) AS total FROM user");
+            $this->db->execute();
+            $total = $this->db->fetch()['total'];
         }
-        return [];
+        return [
+            'users' => $users,
+            'total' => $total
+        ];
     }
     public function findUserByUserName($usersname)
     {
@@ -52,18 +74,40 @@ class UserModel
     }
     public function deleteById($id)
     {
+        $this->db->query('DELETE FROM letter WHERE userId = ?');
+        $this->db->execute([$id]);
         $this->db->query('DELETE FROM user where userId =?');
         return $this->db->execute([$id]);
     }
-    public function findByIdOrName($data)
+    public function findUserById($id)
     {
-        if (is_numeric($data)) {
-            $this->db->query("SELECT * FROM user where userId=?");
-            $this->db->execute([$data]);
-        } else {
-            $this->db->query('SELECT * FROM user where fullName LIKE ?');
-            $this->db->execute(["%$data%"]);
+        $this->db->query('SELECT * FROM user where userId=?');
+        $this->db->execute([$id]);
+        $users = $this->db->fetch();
+        return $users;
+    }
+    public function updateUser($id, $data)
+    {
+        try {
+            $this->db->beginTransaction();
+            $this->db->query('UPDATE user set username=?,fullName=?,password=?,email=?,dob=?,userType=?,department=?,status=? where userId=? ');
+            $this->db->execute([$data['username'], $data['fullname'], $data['password'], $data['email'], $data['birthdate'], $data['categoryuser'], $data['department'], $data['status'], $id]);
+            $this->db->commit();
+            return true;
+        } catch (PDO $err) {
+            $this->db->rollBack();
+            echo "Error";
+            return false;
         }
-        return $this->db->fetchall();
+    }
+    public function deleteMultipleUsers($ids)
+    {
+        if (empty($ids)) return false;
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $this->db->query("DELETE FROM letter WHERE userId IN ($placeholders)");
+        $this->db->execute($ids);
+        $this->db->query("DELETE FROM user WHERE userId IN ($placeholders)");
+        $this->db->execute($ids);
+        return $this->db->rowcount() > 0;
     }
 }

@@ -10,7 +10,7 @@ class DashboardModel
     }
     public function getLetter()
     {
-        $this->db->query('SELECT u.fullName,l.categoryLetter,l.createdAt, l.status,l.approvalDate,l.content FROM `user` as u,`letter` as l WHERE u.userId=l.userId LIMIT 30');
+        $this->db->query('SELECT u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content FROM `user` AS u JOIN `letter` AS l ON u.userId = l.userId ORDER BY l.createdAt DESC LIMIT 30');
         $this->db->execute();
         $letter = $this->db->fetchall();
         if ($letter) {

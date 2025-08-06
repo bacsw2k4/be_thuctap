@@ -1,8 +1,8 @@
 <?php
 class App
 {
-    protected $currentController = 'AuthController';
-    protected $currentMethod = 'login';
+    protected $currentController = 'UsersController';
+    protected $currentMethod = 'showListUser';
     protected $params = [];
 
     public function __construct()
@@ -14,7 +14,7 @@ class App
         }
         require_once APP_PATH . '/controllers/' . $this->currentController . '.php';
         $this->currentController = new $this->currentController;
-        $this->currentMethod = 'login';
+        $this->currentMethod = 'showListUser';
         if (isset($url[1]) && method_exists($this->currentController, $url[1])) {
             $this->currentMethod = $url[1];
             unset($url[1]);

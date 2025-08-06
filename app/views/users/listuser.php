@@ -36,8 +36,31 @@
                     <div class="action">
                         <a href="<?php echo BASE_URL ?>/public/index.php?url=users/addUser"><button class="btn-add"
                                 style="cursor: pointer;">Thêm mới</button></a>
-                        <a><button class="btn-deletemore" style="cursor: pointer;" id="delete-selected">Xóa
-                                nhiều</button></a>
+                        <form style="float: right;" method="post"
+                            action="<?php echo BASE_URL; ?>/public/index.php?url=users/deleteMultiple"
+                            id="bulk-delete-form">
+                            <a><button class="btn-deletemore" style="cursor: pointer;" id="delete-selected">Xóa
+                                    nhiều</button></a>
+                            <div class="popup-confirm" style="display: none;" id="popup-confirm">
+                                <div class="popup-container">
+                                    <div class="popup-header">
+                                        <p style="padding-top: 0px;">Thông báo</p>
+                                        <img src="./img/Vector.png" alt="" class="exit-btn" id="btn-close" width="24px"
+                                            height="24px">
+                                    </div>
+                                    <div class="popup-body2">
+                                        <div style="position: relative;">
+                                            <p>Bạn có chắc chắn lưu lại thay đổi ?<span
+                                                    style="padding-top: 10px;">*</span></p>
+                                        </div>
+                                        <div class="button-group2">
+                                            <div><button type="submit" class="btn-ok">Ok</button></div>
+                                            <div><button type="button" class="btn-huy">Cancel</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
                 </div>
@@ -73,9 +96,10 @@
                                 <td>
                                     <div style="display: flex; justify-content: center; align-items: center;"
                                         class="checkbox-wrapper">
-                                        <input style="display: none" type="checkbox" name="" class="row-checkbox"
-                                            id="row-checkbox1">
-                                        <label for="row-checkbox1"
+                                        <input style="display: none" type="checkbox" name="userIds[]"
+                                            value="<?php echo $user['userId']; ?>" class="row-checkbox"
+                                            id="row-checkbox-<?php echo $user['userId']; ?>">
+                                        <label for="row-checkbox-<?php echo $user['userId']; ?>"
                                             style="text-align: center; display: flex; justify-content: center; align-items: center;">
                                             <div
                                                 style="background-color: #ffffff; width: 24px; height: 24px; border-radius: 4px; border: 1px solid #cccccc; display: flex; justify-content: center; align-items: center;">
@@ -91,8 +115,35 @@
                                 <td><?php echo $user['createdAt'] ?></td>
                                 <td><?php echo $user['status'] ?></td>
                                 <td>
-                                    <button class="btn-edit">Sửa</button>
-                                    <button class="btn-delete">Xoá</button>
+                                    <a
+                                        href="<?php echo BASE_URL; ?>/public/index.php?url=users/getInforEdit/<?php echo $user['userId'] ?>"><button
+                                            class="btn-edit" style="cursor: pointer;" id="btn-edit">Sửa</button></a>
+                                    <button class="btn-delete" style="cursor: pointer;"
+                                        data-id="<?php echo $user['userId'] ?>" id="btn-delete">Xoá</button>
+                                    <form
+                                        action="<?php echo BASE_URL ?>/public/index.php?url=users/deleteById/<?php echo  $user['userId'] ?>"
+                                        method="post" id="adduser-form-<?php echo $user['userId'] ?>">
+                                        <div class="popup-confirm" data-id="<?php echo $user['userId'] ?>"
+                                            style="display: none;" id="popup-confirm">
+                                            <div class="popup-container">
+                                                <div class="popup-header">
+                                                    <p style="padding-top: 0px;">Thông báo</p>
+                                                    <img src="./img/Vector.png" alt="" class="btn-close" id="btn-close"
+                                                        width="24px" height="24px">
+                                                </div>
+                                                <div class="popup-body2">
+                                                    <div style="position: relative;">
+                                                        <p>Bạn có chắc chắn lưu lại thay đổi ?<span
+                                                                style="padding-top: 10px;">*</span></p>
+                                                    </div>
+                                                    <div class="button-group2">
+                                                        <div><button type="submit" class="btn-ok">Ok</button></div>
+                                                        <div><button type="button" class="btn-huy">Cancel</button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -103,30 +154,52 @@
                 </div>
                 <div class="pagination">
                     <div class="back">
-                        <img src="./img/arrowleft.svg">
-                        <a href="#">Previous</a>
+                        <?php if ($data['currentPage'] > 1): ?>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                        <a
+                            href="?url=users/showListUser&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
+                        <?php else: ?>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                        <a>Previous</a>
+                        <?php endif; ?>
                     </div>
-                    <div class="page active">
-                        <a href="#">1</a>
-                    </div>
-                    <div class="page">
-                        <a href="#">2</a>
-                    </div>
-                    <div class="page">
-                        <a href="#">3</a>
-                    </div>
-                    <div class="dot" style="position: relative;">
-                        <a href="#">...</a>
-                    </div>
-                    <div class="page">
-                        <a href="#">67</a>
-                    </div>
-                    <div class="page">
-                        <a href="#">68</a>
-                    </div>
+                    <?php
+                    $currentPage = $data['currentPage'];
+                    $totalPages = $data['totalPages'];
+                    $search = isset($data['search']) ? $data['search'] : '';
+
+                    $range = 2;
+                    $start = max(1, $currentPage - $range);
+                    $end = min($totalPages, $currentPage + $range);
+
+                    if ($start > 1) {
+                        echo '<div class="page"><a href="?url=users/showListUser&page=1' . ($search ? '&search=' . urlencode($search) : '') . '">1</a></div>';
+                        if ($start > 2) {
+                            echo '<div class="dot"><span>...</span></div>';
+                        }
+                    }
+
+                    for ($i = $start; $i <= $end; $i++) {
+                        $active = $i == $currentPage ? 'active' : '';
+                        echo '<div class="page ' . $active . '"><a href="?url=users/showListUser&page=' . $i . ($search ? '&search=' . urlencode($search) : '') . '">' . $i . '</a></div>';
+                    }
+
+                    if ($end < $totalPages) {
+                        if ($end < $totalPages - 1) {
+                            echo '<div class="dot"><span>...</span></div>';
+                        }
+                        echo '<div class="page"><a href="?url=users/showListUser&page=' . $totalPages . ($search ? '&search=' . urlencode($search) : '') . '">' . $totalPages . '</a></div>';
+                    }
+                    ?>
                     <div class="next">
-                        <a href="#">Next</a>
-                        <img src="./img/arrowright.svg">
+                        <?php if ($currentPage < $totalPages): ?>
+                        <a
+                            href="?url=users/showListUser&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                        <?php else: ?>
+                        <a>Next</a>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -178,16 +251,46 @@ selectAll.addEventListener('change', () => {
 });
 
 // Xoá các dòng được chọn
-deleteSelectedBtn.addEventListener('click', () => {
-    const checkboxes = document.querySelectorAll('.row-checkbox');
-    checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            const row = checkbox.closest('tr');
-            row.remove();
-        }
+deleteSelectedBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // Chặn submit mặc định
+
+    const form = document.querySelector('#bulk-delete-form');
+    const selectedIds = [];
+
+    document.querySelectorAll('.row-checkbox:checked').forEach(cb => {
+        selectedIds.push(cb.value);
     });
-    selectAll.checked = false; // Bỏ chọn ô tổng
+
+    if (selectedIds.length === 0) {
+        alert("Vui lòng chọn ít nhất một người dùng để xóa.");
+        return;
+    }
+
+    const popup = document.getElementById('popup-confirm');
+    popup.style.display = 'block';
+
+    popup.querySelector('.btn-ok').onclick = function() {
+        // Thêm input hidden nếu form không chứa checkbox
+        selectedIds.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'userIds[]';
+            input.value = id;
+            form.appendChild(input);
+        });
+
+        form.submit(); // Gửi form sau khi xác nhận
+    };
+
+    popup.querySelector('.btn-huy').onclick = function() {
+        popup.style.display = 'none';
+    };
+
+    popup.querySelector('#btn-close').onclick = function() {
+        popup.style.display = 'none';
+    };
 });
+
 
 // Xoá 1 dòng khi bấm nút xoá
 tableBody.addEventListener('click', (e) => {
@@ -195,5 +298,38 @@ tableBody.addEventListener('click', (e) => {
         const row = e.target.closest('tr');
         row.remove();
     }
+});
+
+const deleteButtons = document.querySelectorAll('.btn-delete');
+
+deleteButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+        const userId = this.getAttribute('data-id');
+        const modalPopup = document.querySelector(`.popup-confirm[data-id="${userId}"]`);
+        if (modalPopup) {
+            modalPopup.style.display = 'block';
+
+            // Gắn sự kiện cho nút OK riêng dòng
+            const btnOk = modalPopup.querySelector('.btn-ok');
+            const form = document.getElementById(`adduser-form-${userId}`);
+            btnOk.onclick = function() {
+                form.submit();
+            };
+
+            // Nút Cancel
+            const btnCancel = modalPopup.querySelector('.btn-huy');
+            btnCancel.onclick = function() {
+                modalPopup.style.display = 'none';
+            };
+
+            // Nút Close (X)
+            const btnClose = modalPopup.querySelector('.btn-close');
+            btnClose.onclick = function() {
+                modalPopup.style.display = 'none';
+            };
+        } else {
+            console.error(`Không tìm thấy popup với data-id="${userId}"`);
+        }
+    });
 });
 </script>

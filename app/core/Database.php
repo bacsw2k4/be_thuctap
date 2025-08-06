@@ -24,6 +24,7 @@ class Database
             die('Database connection error: ' . $e->getMessage());
         }
     }
+
     public function query($sql)
     {
         try {
@@ -68,5 +69,19 @@ class Database
     public function rowcount()
     {
         return $this->stmt->rowCount();
+    }
+    public function beginTransaction()
+    {
+        $this->conn->beginTransaction();
+    }
+
+    public function commit()
+    {
+        $this->conn->commit();
+    }
+
+    public function rollBack()
+    {
+        $this->conn->rollBack();
     }
 }

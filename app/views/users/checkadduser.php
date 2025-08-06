@@ -155,7 +155,7 @@ const btnOk = document.querySelector('.btn-ok');
 const popupConfirm = document.getElementById('popup-confirm');
 const form = document.getElementById('adduser-form');
 btnOpen.addEventListener('click', (e) => {
-    e.preventDefault(); // 
+    e.preventDefault();
     popupConfirm.style.display = 'block';
 });
 
