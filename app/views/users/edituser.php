@@ -19,7 +19,7 @@
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=dashboard/showDashboard">Dashboard</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=users/showListUser" style=" background-color: #007EC6;
     color: white;">Quản lý người dùng</a></div>
-                <div><a href="listletters.html">Quản lý đơn</a></div>
+                <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=letters/showLetters">Quản lý đơn</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=auth/logout">Đăng xuất</a></div>
             </div>
             <div class="content-right">
@@ -136,29 +136,29 @@
     </div>
 </body>
 <script>
-function checkDate() {
-    const dateValue = document.getElementById("birthDate").value;
-    const date = document.getElementById("birthDate");
-    if (dateValue) {
-        date.style.color = "black";
-    } else {
-        date.style.color = "white";
-    }
-}
-
-
-document.querySelector('.clear').addEventListener('click', (e) => {
-    e.preventDefault();
-    ['username', 'fullname', 'password', 'email', 'birthDate'].forEach(id => {
-        const input = document.getElementById(id);
-        if (input && !input.disabled) {
-            input.value = '';
-            input.classList.remove('input-error');
+    function checkDate() {
+        const dateValue = document.getElementById("birthDate").value;
+        const date = document.getElementById("birthDate");
+        if (dateValue) {
+            date.style.color = "black";
+        } else {
+            date.style.color = "white";
         }
+    }
+
+
+    document.querySelector('.clear').addEventListener('click', (e) => {
+        e.preventDefault();
+        ['username', 'fullname', 'password', 'email', 'birthDate'].forEach(id => {
+            const input = document.getElementById(id);
+            if (input && !input.disabled) {
+                input.value = '';
+                input.classList.remove('input-error');
+            }
+        });
+        document.querySelectorAll('.check-empty').forEach(el => el.innerHTML = '');
+        document.querySelectorAll('select').forEach(select => select.classList.remove('input-error'));
     });
-    document.querySelectorAll('.check-empty').forEach(el => el.innerHTML = '');
-    document.querySelectorAll('select').forEach(select => select.classList.remove('input-error'));
-});
 </script>
 
 </html>

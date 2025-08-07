@@ -20,41 +20,41 @@
     color: white;">Dashboard</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=users/showListUser">Quản lý người dùng</a>
                 </div>
-                <div><a href="">Quản lý đơn</a></div>
+                <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=letters/showLetters">Quản lý đơn</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=auth/logout">Đăng xuất</a></div>
             </div>
             <div class="content-right">
                 <table class="table-dashboard">
                     <?php if (count($data['letters']) > 0): ?>
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Người dùng</th>
-                            <th>Loại đơn</th>
-                            <th>Ngày lập</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày duty</th>
-                            <th class="mota">Mô tả</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $i = 1;
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Người dùng</th>
+                                <th>Loại đơn</th>
+                                <th>Ngày lập</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày duty</th>
+                                <th class="mota">Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1;
                             foreach ($data['letters'] as $letter): ?>
-                        <tr>
-                            <td><?php echo $i++ ?></td>
-                            <td><?php echo $letter['fullName'] ?></td>
-                            <td><?php echo $letter['categoryLetter'] ?></td>
-                            <td><?php echo $letter['createdAt'] ?></td>
-                            <td class="bold"><?php echo $letter['status'] ?></td>
-                            <td><?php echo $letter['approvalDate'] ?></td>
-                            <td class="bold"><?php echo $letter['content'] ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
+                                <tr>
+                                    <td><?php echo $i++ ?></td>
+                                    <td><?php echo $letter['fullName'] ?></td>
+                                    <td><?php echo $letter['categoryLetter'] ?></td>
+                                    <td><?php echo $letter['createdAt'] ?></td>
+                                    <td class="bold"><?php echo $letter['status'] ?></td>
+                                    <td><?php echo $letter['approvalDate'] ?></td>
+                                    <td class="bold"><?php echo $letter['content'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
                 </table>
-                <?php else: ?>
+            <?php else: ?>
                 <div>No letters found</div>
-                <?php endif; ?>
+            <?php endif; ?>
             </div>
         </div>
     </div>

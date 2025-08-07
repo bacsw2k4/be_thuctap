@@ -19,7 +19,7 @@
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=dashboard/showDashboard">Dashboard</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=users/showListUser" style=" background-color: #007EC6;
     color: white;">Quản lý người dùng</a></div>
-                <div><a href="listletters.html">Quản lý đơn</a></div>
+                <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=letters/showLetters">Quản lý đơn</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=auth/logout">Đăng xuất</a></div>
             </div>
             <div class="content-right">

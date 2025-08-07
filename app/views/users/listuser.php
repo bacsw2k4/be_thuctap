@@ -19,7 +19,7 @@
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=dashboard/showDashboard">Dashboard</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=users/showListUser" style=" background-color: #007EC6;
     color: white;">Quản lý người dùng</a></div>
-                <div><a href="">Quản lý đơn</a></div>
+                <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=letters/showLetters">Quản lý đơn</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=auth/logout">Đăng xuất</a></div>
             </div>
             <div class="content-right">
@@ -88,7 +88,9 @@
                                 <th>Tên người dùng</th>
                                 <th>Ngày lập</th>
                                 <th>Trạng thái</th>
-                                <th>Hành động</th>
+                                <?php if ($_SESSION['user_category'] == "Quản lý" || $_SESSION['user_category'] == "admin"): ?>
+                                    <th>Hành động</th>
+                                <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody id="table-body">
@@ -116,8 +118,9 @@
                                     <td><?php echo $user['fullName'] ?></td>
                                     <td><?php echo $user['createdAt'] ?></td>
                                     <td><?php echo $user['status'] ?></td>
-                                    <td>
-                                        <?php if ($_SESSION['user_category'] == "Quản lý" || $_SESSION['user_category'] == "admin"): ?>
+                                    <?php if ($_SESSION['user_category'] == "Quản lý" || $_SESSION['user_category'] == "admin"): ?>
+                                        <td>
+
                                             <a
                                                 href="<?php echo BASE_URL; ?>/public/index.php?url=users/getInforEdit/<?php echo $user['userId'] ?>"><button
                                                     class="btn-edit" style="cursor: pointer;" id="btn-edit">Sửa</button></a>
@@ -147,8 +150,8 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                        <?php endif; ?>
-                                    </td>
+                                        </td>
+                                    <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

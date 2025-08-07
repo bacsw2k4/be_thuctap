@@ -19,7 +19,7 @@
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=dashboard/showDashboard">Dashboard</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=users/showListUser" style=" background-color: #007EC6;
     color: white;">Quản lý người dùng</a></div>
-                <div><a href="">Quản lý đơn</a></div>
+                <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=letters/showLetters">Quản lý đơn</a></div>
                 <div><a href="<?php echo BASE_URL; ?>/public/index.php?url=auth/logout">Đăng xuất</a></div>
             </div>
             <div class="content-right">
@@ -148,28 +148,28 @@
 
 </html>
 <script>
-const btnOpen = document.getElementById('btn-open');
-const btnClose = document.getElementById('btn-close');
-const btnCancel = document.querySelector('.btn-huy');
-const btnOk = document.querySelector('.btn-ok');
-const popupConfirm = document.getElementById('popup-confirm');
-const form = document.getElementById('adduser-form');
-btnOpen.addEventListener('click', (e) => {
-    e.preventDefault();
-    popupConfirm.style.display = 'block';
-});
+    const btnOpen = document.getElementById('btn-open');
+    const btnClose = document.getElementById('btn-close');
+    const btnCancel = document.querySelector('.btn-huy');
+    const btnOk = document.querySelector('.btn-ok');
+    const popupConfirm = document.getElementById('popup-confirm');
+    const form = document.getElementById('adduser-form');
+    btnOpen.addEventListener('click', (e) => {
+        e.preventDefault();
+        popupConfirm.style.display = 'block';
+    });
 
 
-btnOk.addEventListener('click', () => {
-    form.submit();
-});
+    btnOk.addEventListener('click', () => {
+        form.submit();
+    });
 
 
-btnClose.addEventListener('click', () => {
-    popupConfirm.style.display = 'none';
-});
+    btnClose.addEventListener('click', () => {
+        popupConfirm.style.display = 'none';
+    });
 
-btnCancel.addEventListener('click', () => {
-    popupConfirm.style.display = 'none';
-});
+    btnCancel.addEventListener('click', () => {
+        popupConfirm.style.display = 'none';
+    });
 </script>
