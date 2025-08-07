@@ -34,33 +34,35 @@
                         </form>
                     </div>
                     <div class="action">
-                        <a href="<?php echo BASE_URL ?>/public/index.php?url=users/addUser"><button class="btn-add"
-                                style="cursor: pointer;">Thêm mới</button></a>
-                        <form style="float: right;" method="post"
-                            action="<?php echo BASE_URL; ?>/public/index.php?url=users/deleteMultiple"
-                            id="bulk-delete-form">
-                            <a><button class="btn-deletemore" style="cursor: pointer;" id="delete-selected">Xóa
-                                    nhiều</button></a>
-                            <div class="popup-confirm" style="display: none;" id="popup-confirm">
-                                <div class="popup-container">
-                                    <div class="popup-header">
-                                        <p style="padding-top: 0px;">Thông báo</p>
-                                        <img src="./img/Vector.png" alt="" class="exit-btn" id="btn-close" width="24px"
-                                            height="24px">
-                                    </div>
-                                    <div class="popup-body2">
-                                        <div style="position: relative;">
-                                            <p>Bạn có chắc chắn lưu lại thay đổi ?<span
-                                                    style="padding-top: 10px;">*</span></p>
+                        <?php if ($_SESSION['user_category'] == "Quản lý" || $_SESSION['user_category'] == "admin"): ?>
+                            <a href="<?php echo BASE_URL ?>/public/index.php?url=users/addUser"><button class="btn-add"
+                                    style="cursor: pointer;">Thêm mới</button></a>
+                            <form style="float: right;" method="post"
+                                action="<?php echo BASE_URL; ?>/public/index.php?url=users/deleteMultiple"
+                                id="bulk-delete-form">
+                                <a><button class="btn-deletemore" style="cursor: pointer;" id="delete-selected">Xóa
+                                        nhiều</button></a>
+                                <div class="popup-confirm" style="display: none;" id="popup-confirm">
+                                    <div class="popup-container">
+                                        <div class="popup-header">
+                                            <p style="padding-top: 0px;">Thông báo</p>
+                                            <img src="./img/Vector.png" alt="" class="exit-btn" id="btn-close" width="24px"
+                                                height="24px">
                                         </div>
-                                        <div class="button-group2">
-                                            <div><button type="submit" class="btn-ok">Ok</button></div>
-                                            <div><button type="button" class="btn-huy">Cancel</button></div>
+                                        <div class="popup-body2">
+                                            <div style="position: relative;">
+                                                <p>Bạn có chắc chắn lưu lại thay đổi ?<span
+                                                        style="padding-top: 10px;">*</span></p>
+                                            </div>
+                                            <div class="button-group2">
+                                                <div><button type="submit" class="btn-ok">Ok</button></div>
+                                                <div><button type="button" class="btn-huy">Cancel</button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -92,60 +94,62 @@
                         <tbody id="table-body">
                             <?php
                             foreach ($data['users'] as $user) : ?>
-                            <tr>
-                                <td>
-                                    <div style="display: flex; justify-content: center; align-items: center;"
-                                        class="checkbox-wrapper">
-                                        <input style="display: none" type="checkbox" name="userIds[]"
-                                            value="<?php echo $user['userId']; ?>" class="row-checkbox"
-                                            id="row-checkbox-<?php echo $user['userId']; ?>">
-                                        <label for="row-checkbox-<?php echo $user['userId']; ?>"
-                                            style="text-align: center; display: flex; justify-content: center; align-items: center;">
-                                            <div
-                                                style="background-color: #ffffff; width: 24px; height: 24px; border-radius: 4px; border: 1px solid #cccccc; display: flex; justify-content: center; align-items: center;">
-                                                <img src="./img/checkbox.svg"
-                                                    style="width: 12px; height: 9.4px; display: none" alt=""
-                                                    class="check-icon">
-                                            </div>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td><?php echo $user['userId'] ?></td>
-                                <td><?php echo $user['fullName'] ?></td>
-                                <td><?php echo $user['createdAt'] ?></td>
-                                <td><?php echo $user['status'] ?></td>
-                                <td>
-                                    <a
-                                        href="<?php echo BASE_URL; ?>/public/index.php?url=users/getInforEdit/<?php echo $user['userId'] ?>"><button
-                                            class="btn-edit" style="cursor: pointer;" id="btn-edit">Sửa</button></a>
-                                    <button class="btn-delete" style="cursor: pointer;"
-                                        data-id="<?php echo $user['userId'] ?>" id="btn-delete">Xoá</button>
-                                    <form
-                                        action="<?php echo BASE_URL ?>/public/index.php?url=users/deleteById/<?php echo  $user['userId'] ?>"
-                                        method="post" id="adduser-form-<?php echo $user['userId'] ?>">
-                                        <div class="popup-confirm" data-id="<?php echo $user['userId'] ?>"
-                                            style="display: none;" id="popup-confirm">
-                                            <div class="popup-container">
-                                                <div class="popup-header">
-                                                    <p style="padding-top: 0px;">Thông báo</p>
-                                                    <img src="./img/Vector.png" alt="" class="btn-close" id="btn-close"
-                                                        width="24px" height="24px">
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; justify-content: center; align-items: center;"
+                                            class="checkbox-wrapper">
+                                            <input style="display: none" type="checkbox" name="userIds[]"
+                                                value="<?php echo $user['userId']; ?>" class="row-checkbox"
+                                                id="row-checkbox-<?php echo $user['userId']; ?>">
+                                            <label for="row-checkbox-<?php echo $user['userId']; ?>"
+                                                style="text-align: center; display: flex; justify-content: center; align-items: center;">
+                                                <div
+                                                    style="background-color: #ffffff; width: 24px; height: 24px; border-radius: 4px; border: 1px solid #cccccc; display: flex; justify-content: center; align-items: center;">
+                                                    <img src="./img/checkbox.svg"
+                                                        style="width: 12px; height: 9.4px; display: none" alt=""
+                                                        class="check-icon">
                                                 </div>
-                                                <div class="popup-body2">
-                                                    <div style="position: relative;">
-                                                        <p>Bạn có chắc chắn lưu lại thay đổi ?<span
-                                                                style="padding-top: 10px;">*</span></p>
-                                                    </div>
-                                                    <div class="button-group2">
-                                                        <div><button type="submit" class="btn-ok">Ok</button></div>
-                                                        <div><button type="button" class="btn-huy">Cancel</button></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            </label>
                                         </div>
-                                    </form>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td><?php echo $user['userId'] ?></td>
+                                    <td><?php echo $user['fullName'] ?></td>
+                                    <td><?php echo $user['createdAt'] ?></td>
+                                    <td><?php echo $user['status'] ?></td>
+                                    <td>
+                                        <?php if ($_SESSION['user_category'] == "Quản lý" || $_SESSION['user_category'] == "admin"): ?>
+                                            <a
+                                                href="<?php echo BASE_URL; ?>/public/index.php?url=users/getInforEdit/<?php echo $user['userId'] ?>"><button
+                                                    class="btn-edit" style="cursor: pointer;" id="btn-edit">Sửa</button></a>
+                                            <button class="btn-delete" style="cursor: pointer;"
+                                                data-id="<?php echo $user['userId'] ?>" id="btn-delete">Xoá</button>
+                                            <form
+                                                action="<?php echo BASE_URL ?>/public/index.php?url=users/deleteById/<?php echo  $user['userId'] ?>"
+                                                method="post" id="adduser-form-<?php echo $user['userId'] ?>">
+                                                <div class="popup-confirm" data-id="<?php echo $user['userId'] ?>"
+                                                    style="display: none;" id="popup-confirm">
+                                                    <div class="popup-container">
+                                                        <div class="popup-header">
+                                                            <p style="padding-top: 0px;">Thông báo</p>
+                                                            <img src="./img/Vector.png" alt="" class="btn-close" id="btn-close"
+                                                                width="24px" height="24px">
+                                                        </div>
+                                                        <div class="popup-body2">
+                                                            <div style="position: relative;">
+                                                                <p>Bạn có chắc chắn lưu lại thay đổi ?<span
+                                                                        style="padding-top: 10px;">*</span></p>
+                                                            </div>
+                                                            <div class="button-group2">
+                                                                <div><button type="submit" class="btn-ok">Ok</button></div>
+                                                                <div><button type="button" class="btn-huy">Cancel</button></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
 
@@ -155,12 +159,12 @@
                 <div class="pagination">
                     <div class="back">
                         <?php if ($data['currentPage'] > 1): ?>
-                        <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
-                        <a
-                            href="?url=users/showListUser&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
+                            <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                            <a
+                                href="?url=users/showListUser&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
                         <?php else: ?>
-                        <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
-                        <a>Previous</a>
+                            <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                            <a>Previous</a>
                         <?php endif; ?>
                     </div>
                     <?php
@@ -193,12 +197,12 @@
                     ?>
                     <div class="next">
                         <?php if ($currentPage < $totalPages): ?>
-                        <a
-                            href="?url=users/showListUser&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
-                        <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                            <a
+                                href="?url=users/showListUser&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
+                            <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
                         <?php else: ?>
-                        <a>Next</a>
-                        <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                            <a>Next</a>
+                            <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
                         <?php endif; ?>
                     </div>
                 </div>
@@ -209,127 +213,127 @@
 
 </html>
 <script>
-const selectAll = document.getElementById('select-all');
-const selectAllIcon = document.getElementById('select-all-icon');
-const rowWrappers = document.querySelectorAll('.checkbox-wrapper');
-const rowCheckboxes = document.querySelectorAll('.row-checkbox');
-const rowIcons = document.querySelectorAll('.check-icon');
-const deleteSelectedBtn = document.getElementById('delete-selected');
-const tableBody = document.getElementById('table-body')
-
-// Toggle tất cả
-selectAll.addEventListener('change', function() {
-    const isChecked = selectAll.checked;
-    selectAllIcon.style.display = isChecked ? 'block' : 'none';
-
-    rowCheckboxes.forEach((checkbox, index) => {
-        checkbox.checked = isChecked;
-        rowIcons[index].style.display = isChecked ? 'block' : 'none';
-    });
-});
-
-// Bắt sự kiện click từng dòng (click lên .checkbox-wrapper)
-rowWrappers.forEach((wrapper, index) => {
-    wrapper.addEventListener('click', function() {
-        const checkbox = rowCheckboxes[index];
-        const icon = rowIcons[index];
-
-        checkbox.checked = !checkbox.checked;
-        icon.style.display = checkbox.checked ? 'block' : 'none';
-
-        // Cập nhật trạng thái select-all
-        const allChecked = [...rowCheckboxes].every(cb => cb.checked);
-        selectAll.checked = allChecked;
-        selectAllIcon.style.display = allChecked ? 'block' : 'none';
-    });
-});
-selectAll.addEventListener('change', () => {
+    const selectAll = document.getElementById('select-all');
+    const selectAllIcon = document.getElementById('select-all-icon');
+    const rowWrappers = document.querySelectorAll('.checkbox-wrapper');
     const rowCheckboxes = document.querySelectorAll('.row-checkbox');
-    rowCheckboxes.forEach(checkbox => {
-        checkbox.checked = selectAll.checked;
+    const rowIcons = document.querySelectorAll('.check-icon');
+    const deleteSelectedBtn = document.getElementById('delete-selected');
+    const tableBody = document.getElementById('table-body')
+
+    // Toggle tất cả
+    selectAll.addEventListener('change', function() {
+        const isChecked = selectAll.checked;
+        selectAllIcon.style.display = isChecked ? 'block' : 'none';
+
+        rowCheckboxes.forEach((checkbox, index) => {
+            checkbox.checked = isChecked;
+            rowIcons[index].style.display = isChecked ? 'block' : 'none';
+        });
     });
-});
 
-// Xoá các dòng được chọn
-deleteSelectedBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // Chặn submit mặc định
+    // Bắt sự kiện click từng dòng (click lên .checkbox-wrapper)
+    rowWrappers.forEach((wrapper, index) => {
+        wrapper.addEventListener('click', function() {
+            const checkbox = rowCheckboxes[index];
+            const icon = rowIcons[index];
 
-    const form = document.querySelector('#bulk-delete-form');
-    const selectedIds = [];
+            checkbox.checked = !checkbox.checked;
+            icon.style.display = checkbox.checked ? 'block' : 'none';
 
-    document.querySelectorAll('.row-checkbox:checked').forEach(cb => {
-        selectedIds.push(cb.value);
+            // Cập nhật trạng thái select-all
+            const allChecked = [...rowCheckboxes].every(cb => cb.checked);
+            selectAll.checked = allChecked;
+            selectAllIcon.style.display = allChecked ? 'block' : 'none';
+        });
+    });
+    selectAll.addEventListener('change', () => {
+        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAll.checked;
+        });
     });
 
-    if (selectedIds.length === 0) {
-        alert("Vui lòng chọn ít nhất một người dùng để xóa.");
-        return;
-    }
+    // Xoá các dòng được chọn
+    deleteSelectedBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Chặn submit mặc định
 
-    const popup = document.getElementById('popup-confirm');
-    popup.style.display = 'block';
+        const form = document.querySelector('#bulk-delete-form');
+        const selectedIds = [];
 
-    popup.querySelector('.btn-ok').onclick = function() {
-        // Thêm input hidden nếu form không chứa checkbox
-        selectedIds.forEach(id => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'userIds[]';
-            input.value = id;
-            form.appendChild(input);
+        document.querySelectorAll('.row-checkbox:checked').forEach(cb => {
+            selectedIds.push(cb.value);
         });
 
-        form.submit(); // Gửi form sau khi xác nhận
-    };
+        if (selectedIds.length === 0) {
+            alert("Vui lòng chọn ít nhất một người dùng để xóa.");
+            return;
+        }
 
-    popup.querySelector('.btn-huy').onclick = function() {
-        popup.style.display = 'none';
-    };
+        const popup = document.getElementById('popup-confirm');
+        popup.style.display = 'block';
 
-    popup.querySelector('#btn-close').onclick = function() {
-        popup.style.display = 'none';
-    };
-});
+        popup.querySelector('.btn-ok').onclick = function() {
+            // Thêm input hidden nếu form không chứa checkbox
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'userIds[]';
+                input.value = id;
+                form.appendChild(input);
+            });
+
+            form.submit(); // Gửi form sau khi xác nhận
+        };
+
+        popup.querySelector('.btn-huy').onclick = function() {
+            popup.style.display = 'none';
+        };
+
+        popup.querySelector('#btn-close').onclick = function() {
+            popup.style.display = 'none';
+        };
+    });
 
 
-// Xoá 1 dòng khi bấm nút xoá
-tableBody.addEventListener('click', (e) => {
-    if (e.target.classList.contains('delete-btn')) {
-        const row = e.target.closest('tr');
-        row.remove();
-    }
-});
-
-const deleteButtons = document.querySelectorAll('.btn-delete');
-
-deleteButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-        const userId = this.getAttribute('data-id');
-        const modalPopup = document.querySelector(`.popup-confirm[data-id="${userId}"]`);
-        if (modalPopup) {
-            modalPopup.style.display = 'block';
-
-            // Gắn sự kiện cho nút OK riêng dòng
-            const btnOk = modalPopup.querySelector('.btn-ok');
-            const form = document.getElementById(`adduser-form-${userId}`);
-            btnOk.onclick = function() {
-                form.submit();
-            };
-
-            // Nút Cancel
-            const btnCancel = modalPopup.querySelector('.btn-huy');
-            btnCancel.onclick = function() {
-                modalPopup.style.display = 'none';
-            };
-
-            // Nút Close (X)
-            const btnClose = modalPopup.querySelector('.btn-close');
-            btnClose.onclick = function() {
-                modalPopup.style.display = 'none';
-            };
-        } else {
-            console.error(`Không tìm thấy popup với data-id="${userId}"`);
+    // Xoá 1 dòng khi bấm nút xoá
+    tableBody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-btn')) {
+            const row = e.target.closest('tr');
+            row.remove();
         }
     });
-});
+
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+
+    deleteButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const userId = this.getAttribute('data-id');
+            const modalPopup = document.querySelector(`.popup-confirm[data-id="${userId}"]`);
+            if (modalPopup) {
+                modalPopup.style.display = 'block';
+
+                // Gắn sự kiện cho nút OK riêng dòng
+                const btnOk = modalPopup.querySelector('.btn-ok');
+                const form = document.getElementById(`adduser-form-${userId}`);
+                btnOk.onclick = function() {
+                    form.submit();
+                };
+
+                // Nút Cancel
+                const btnCancel = modalPopup.querySelector('.btn-huy');
+                btnCancel.onclick = function() {
+                    modalPopup.style.display = 'none';
+                };
+
+                // Nút Close (X)
+                const btnClose = modalPopup.querySelector('.btn-close');
+                btnClose.onclick = function() {
+                    modalPopup.style.display = 'none';
+                };
+            } else {
+                console.error(`Không tìm thấy popup với data-id="${userId}"`);
+            }
+        });
+    });
 </script>

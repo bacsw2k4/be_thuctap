@@ -9,18 +9,22 @@ class UsersController extends BaseController
     }
     public function showListUser()
     {
+        $department = $_SESSION['user_department'];
+        $category = $_SESSION['user_category'];
         $search = isset($_GET['search']) ? trim($_GET['search']) : null;
         $page = isset($_GET['page']) ? (int)($_GET['page']) : 1;
         $limit = ITEMS_PER_PAGE;
         $offset = ($page - 1) * $limit;
         $page = max($page, 1);
-        $result = $this->userModel->getAllUser($search, $limit, $offset);
+        $result = $this->userModel->getAllUser($search, $limit, $offset, $department, $category);
         $totalPages = ceil($result['total'] / $limit);
         $data = [
             'users' => $result['users'],
             'totalPages' => $totalPages,
             'currentPage' => $page,
-            'search' => $search
+            'search' => $search,
+            'department' => $department,
+            'category' => $category
         ];
         $this->view('users/listuser', $data);
     }

@@ -34,6 +34,8 @@ class AuthController extends BaseController
                 if ($user) {
                     $_SESSION['user_id'] = $user['userId'];
                     $_SESSION['user_username'] = $user['username'];
+                    $_SESSION['user_category'] = $user['userType'];
+                    $_SESSION['user_department'] = $user['department'];
                     $this->redirect('dashboard/showDashboard');
                 } else {
                     $data['password_err'] = 'Sai tài khoản hoặc mật khẩu';
@@ -58,6 +60,8 @@ class AuthController extends BaseController
 
         unset($_SESSION['user_id']);
         unset($_SESSION['user_username']);
+        unset($_SESSION['user_category']);
+        unset($_SESSION['user_department']);
         session_destroy();
         $this->redirect('auth/login');
     }
