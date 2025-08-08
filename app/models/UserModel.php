@@ -90,8 +90,8 @@ class UserModel
     {
         try {
             $this->db->beginTransaction();
-            $this->db->query('UPDATE user set username=?,fullName=?,password=?,email=?,dob=?,userType=?,department=?,status=? where userId=? ');
-            $this->db->execute([$data['username'], $data['fullname'], $data['password'], $data['email'], $data['birthdate'], $data['categoryuser'], $data['department'], $data['status'], $id]);
+            $this->db->query('UPDATE letter set status=?,approvalDate=? where letterId =? ');
+            $this->db->execute([$data['status'], time(), $id]);
             $this->db->commit();
             return true;
         } catch (PDO $err) {

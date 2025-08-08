@@ -365,7 +365,6 @@ class UsersController extends BaseController
 
             try {
                 $success = $this->userModel->deleteMultipleUsers($userIds);
-
                 if ($success) {
                     $this->redirect('users');
                 } else {

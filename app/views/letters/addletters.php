@@ -25,28 +25,35 @@
             </div>
             <div class="content-right">
                 <p>Thêm mới đơn</p>
-                <form method="post" action="" id="form-adduser" enctype="multipart/form-data">
+                <form method="post" action="<?php echo BASE_URL; ?>/public/index.php?url=letters/addLetter"
+                    id="form-adduser" enctype="multipart/form-data">
                     <div class="form-adduser-group">
+                        <input type="text" style="display:none" name="userId"
+                            value="<?php echo $_SESSION['user_id'] ?>">
                         <div>
                             <label>Tiêu đề<span>*</span></label>
-                            <input type="text" name="title" id="title">
+                            <input type="text" name="title" id="title" value="<?php echo $data['title'] ?>">
                         </div>
-                        <div class="check-empty check-title"></div>
+                        <div class="check-empty check-title"><?php echo  $data['title_err'] ?></div>
                     </div>
                     <div class="form-adduser-group">
                         <div>
                             <label>Nội dung</label>
-                            <textarea name="content" style="width: 480px; height: 94px;" id="content"></textarea>
+                            <textarea name="content" style="width: 480px; height: 94px;" id="content"
+                                value="<?php echo $data['content'] ?>"></textarea>
                         </div>
-                        <div class="check-empty check-content" style="margin-top: 60px;"></div>
+                        <div class="check-empty check-content" style="margin-top: 60px;">
+                            <?php echo  $data['content_err'] ?></div>
                     </div>
                     <div class="form-adduser-group" style="margin-top: 60px;">
                         <div>
                             <label>Người duyệt<span>*</span></label>
-                            <select name="categoryuser" class="option" id="role">
-                                <option>Value</option>
-                                <option>A</option>
-                                <option>B</option>
+                            <select name="roleuser" class="option" id="role">
+                                <?php foreach ($data['userdepartment'] as $userDepartment): ?>
+                                    <option value="<?php echo $userDepartment['userId'] ?>"
+                                        <?php echo ($userDepartment['userId'] == $data['roleuser']) ? 'selected' : ''; ?>>
+                                        <?php echo $userDepartment['fullName'] ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="check-empty check-select"></div>
@@ -55,12 +62,18 @@
                         <div>
                             <label>Loại đơn<span>*</span></label>
                             <select name="categoryletter" class="option" id="categoryletter">
-                                <option>Value</option>
-                                <option>A</option>
-                                <option>B</option>
+                                <option value="Đơn nghỉ phép"
+                                    <?php echo ($data['categoryletter'] == 'Đơn nghỉ phép') ? 'selected' : ''; ?>>Đơn
+                                    nghỉ phép</option>
+                                <option value="Đơn thay đổi giờ làm"
+                                    <?php echo ($data['categoryletter'] == 'Đơn thay đổi giờ làm') ? 'selected' : ''; ?>>
+                                    Đơn thay đổi giờ làm</option>
+                                <option value="Đơn xin thanh toán công tác phí"
+                                    <?php echo ($data['categoryletter'] == 'Đơn xin thanh toán công tác phí') ? 'selected' : ''; ?>>
+                                    Đơn xin thanh toán công tác phí</option>
                             </select>
                         </div>
-                        <div class="check-empty check-select"></div>
+                        <div class="check-empty check-select"><?php echo $data['categoryletter_err'] ?></div>
                     </div>
                     <div class="form-adduser-group">
                         <div>
@@ -68,10 +81,10 @@
                             <div class="date-container" style="margin-left: -21px;">
                                 <input id="datestart" type="date" name="datestart"
                                     style="width: 189px; height: 40px;  padding: 5px; color: transparent;"
-                                    onchange="checkDateStart()">
+                                    value="<?php echo $data['startdate'] ?>" onchange="checkDateStart()">
                             </div>
                         </div>
-                        <div class="check-empty check-birthdate"></div>
+                        <div class="check-empty check-birthdate"><?php echo  $data['startdate_err'] ?></div>
                     </div>
                     <div class="form-adduser-group">
                         <div>
@@ -79,10 +92,10 @@
                             <div class="date-container" style="margin-left: -23px;">
                                 <input id="dateend" type="date" name="dateend"
                                     style="width: 189px; height: 40px;  padding: 5px; color: transparent;"
-                                    onchange="checkDateEnd()">
+                                    value="<?php echo $data['enddate'] ?>" onchange="checkDateEnd()">
                             </div>
                         </div>
-                        <div class="check-empty check-birthdate"></div>
+                        <div class="check-empty check-birthdate"><?php echo  $data['enddate_err'] ?></div>
                     </div>
 
                     <div class="form-adduser-group">
@@ -90,12 +103,13 @@
                             <label style="position: absolute;">Đính kèm<span>*</span></label>
                             <label for="file" id="file-label"
                                 style="border: 1px solid #cccccc; width: 189px; height: 40px; border-radius: 4px; display: inline-block; position: relative;margin-left: 61px; left: 65px;">
-                                <input name="file" type="file" id="file" style="width: 189px;" hidden>
+                                <input name="file" type="file" id="file" style="width: 189px;" hidden
+                                    <?php echo $data['file'] ?>>
                                 <img src="./img/upload.svg" alt="" srcset=""
                                     style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
                             </label>
                         </div>
-                        <div class="check-empty check-file"></div>
+                        <div class="check-empty check-file"><?php echo  $data['file_err'] ?></div>
                     </div>
                     <div class="btn-adduser-group">
                         <button class="continue" style="cursor: pointer;">Tiếp theo</button>

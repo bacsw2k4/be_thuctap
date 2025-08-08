@@ -25,11 +25,13 @@
             </div>
             <div class="content-right">
                 <p>Duyệt đơn</p>
-                <form method="post" action="" id="form-adduser" enctype="multipart/form-data">
+                <form method="post" action="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter"
+                    id="form-adduser" enctype="multipart/form-data">
                     <div class="form-adduser-group">
                         <div>
                             <label>Tiêu đề<span>*</span></label>
-                            <input type="text" name="title" style="background-color: #CCCCCC80;" disabled>
+                            <input type="text" name="title" style="background-color: #CCCCCC80;" disabled
+                                value="<?php echo $data['title'] ?>">
                         </div>
                         <div></div>
                     </div>
@@ -37,7 +39,7 @@
                         <div>
                             <label>Nội dung</label>
                             <textarea name="content" style="width: 480px; height: 94px; background-color: #CCCCCC80;"
-                                disabled></textarea>
+                                disabled> <?php echo $data['content'] ?>"</textarea>
                         </div>
                         <div></div>
                     </div>
@@ -45,7 +47,8 @@
                         <div>
                             <label>Loại đơn<span>*</span></label>
                             <input type="text" name="categoryletter"
-                                style="width: 240px; margin-right: 240px; background-color: #CCCCCC80;" disabled>
+                                style="width: 240px; margin-right: 240px; background-color: #CCCCCC80;" disabled
+                                value="<?php echo $data['categoryletter'] ?>">
                         </div>
                         <div></div>
                     </div>
@@ -53,7 +56,8 @@
                         <div>
                             <label>Ngày bắt đầu<span>*</span></label>
                             <input type="text" name="datestart"
-                                style="width: 189px; margin-right: 291px; background-color: #CCCCCC80;" disabled>
+                                style="width: 189px; margin-right: 291px; background-color: #CCCCCC80;" disabled
+                                value="<?php echo $data['startdate'] ?>">
 
                         </div>
                         <div></div>
@@ -62,7 +66,8 @@
                         <div>
                             <label>Ngày kết thúc<span>*</span></label>
                             <input type="text" name="dateend"
-                                style="width: 189px; margin-right: 291px; background-color: #CCCCCC80;" disabled>
+                                style="width: 189px; margin-right: 291px; background-color: #CCCCCC80;" disabled
+                                value="<?php echo $data['enddate'] ?>">
 
                         </div>
                         <div></div>
@@ -71,7 +76,9 @@
                     <div class="form-adduser-group">
                         <div>
                             <label>Đính kèm<span>*</span></label>
-                            <a href="#" style="text-decoration: none;margin-left: 61px;">anh.jpg</a>
+                            <a href="<?php echo BASE_URL; ?>/public/uploads/<?php echo $data['file'] ?>"
+                                style="text-decoration: none;margin-left: 61px;">
+                                <?php echo $data['file'] ?></a>
                         </div>
                         <div></div>
                     </div>

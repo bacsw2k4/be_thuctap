@@ -68,7 +68,9 @@
                                     <td class="bold" style="border-right: none;"><?php echo $letter['content']; ?></td>
                                     <td style="padding: 5px;">
                                         <?php if (($_SESSION['user_category'] == "Quản lý" && $letter['status'] == 'Chờ duyệt') || ($_SESSION['user_category'] == "admin" && $letter['status'] == 'Chờ duyệt')): ?>
-                                            <button class="btn-approval">Duyệt</button>
+                                            <a
+                                                href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId'] ?>"><button
+                                                    class="btn-approval">Duyệt</button></a>
                                             <button class="btn-cancel">Hủy</button>
                                         <?php endif; ?>
                                     </td>
@@ -84,7 +86,7 @@
                         <?php if ($data['currentPage'] > 1): ?>
                             <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
                             <a
-                                href="?url=users/showListUser&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
+                                href="?url=letters/showLetters&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
                         <?php else: ?>
                             <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
                             <a>Previous</a>
@@ -100,7 +102,7 @@
                     $end = min($totalPages, $currentPage + $range);
 
                     if ($start > 1) {
-                        echo '<div class="page"><a href="?url=users/showListUser&page=1' . ($search ? '&search=' . urlencode($search) : '') . '">1</a></div>';
+                        echo '<div class="page"><a href="?url=letters/showLetters&page=1' . ($search ? '&search=' . urlencode($search) : '') . '">1</a></div>';
                         if ($start > 2) {
                             echo '<div class="dot"><span>...</span></div>';
                         }
@@ -108,20 +110,20 @@
 
                     for ($i = $start; $i <= $end; $i++) {
                         $active = $i == $currentPage ? 'active' : '';
-                        echo '<div class="page ' . $active . '"><a href="?url=users/showListUser&page=' . $i . ($search ? '&search=' . urlencode($search) : '') . '">' . $i . '</a></div>';
+                        echo '<div class="page ' . $active . '"><a href="?url=letters/showLetters&page=' . $i . ($search ? '&search=' . urlencode($search) : '') . '">' . $i . '</a></div>';
                     }
 
                     if ($end < $totalPages) {
                         if ($end < $totalPages - 1) {
                             echo '<div class="dot"><span>...</span></div>';
                         }
-                        echo '<div class="page"><a href="?url=users/showListUser&page=' . $totalPages . ($search ? '&search=' . urlencode($search) : '') . '">' . $totalPages . '</a></div>';
+                        echo '<div class="page"><a href="?url=letters/showLetters&page=' . $totalPages . ($search ? '&search=' . urlencode($search) : '') . '">' . $totalPages . '</a></div>';
                     }
                     ?>
                     <div class="next">
                         <?php if ($currentPage < $totalPages): ?>
                             <a
-                                href="?url=users/showListUser&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
+                                href="?url=letters/showLetters&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
                             <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
                         <?php else: ?>
                             <a>Next</a>
