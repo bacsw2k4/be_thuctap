@@ -25,7 +25,8 @@
             </div>
             <div class="content-right">
                 <p>Duyệt đơn</p>
-                <form method="post" action="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter"
+                <form method="post"
+                    action="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $data['letterId'] ?>"
                     id="form-adduser" enctype="multipart/form-data">
                     <div class="form-adduser-group">
                         <div>
@@ -39,7 +40,7 @@
                         <div>
                             <label>Nội dung</label>
                             <textarea name="content" style="width: 480px; height: 94px; background-color: #CCCCCC80;"
-                                disabled> <?php echo $data['content'] ?>"</textarea>
+                                disabled> <?php echo $data['content'] ?></textarea>
                         </div>
                         <div></div>
                     </div>
@@ -108,37 +109,37 @@
     </div>
 </body>
 <script>
-    const btn_open = document.getElementById('btn-open');
-    const btn_close = document.getElementById('btn-close');
-    const popup_confirm_cancel = document.getElementById('popup-confirm-cancel');
-    btn_open.addEventListener('click', (e) => {
-        e.preventDefault();
-        popup_confirm_cancel.style.display = 'block';
+const btn_open = document.getElementById('btn-open');
+const btn_close = document.getElementById('btn-close');
+const popup_confirm_cancel = document.getElementById('popup-confirm-cancel');
+btn_open.addEventListener('click', (e) => {
+    e.preventDefault();
+    popup_confirm_cancel.style.display = 'block';
 
-    });
-    btn_close.addEventListener('click', () => {
-        popup_confirm_cancel.style.display = 'none';
-    });
+});
+btn_close.addEventListener('click', () => {
+    popup_confirm_cancel.style.display = 'none';
+});
 
-    function checkDateStart() {
-        const dateValue = document.getElementById("datestart").value;
-        const date = document.getElementById("datestart");
-        if (dateValue) {
-            date.style.color = "black";
-        } else {
-            date.style.color = "white";
-        }
+function checkDateStart() {
+    const dateValue = document.getElementById("datestart").value;
+    const date = document.getElementById("datestart");
+    if (dateValue) {
+        date.style.color = "black";
+    } else {
+        date.style.color = "white";
     }
+}
 
-    function checkDateEnd() {
-        const dateValue = document.getElementById("dateend").value;
-        const date = document.getElementById("dateend");
-        if (dateValue) {
-            date.style.color = "black";
-        } else {
-            date.style.color = "white";
-        }
+function checkDateEnd() {
+    const dateValue = document.getElementById("dateend").value;
+    const date = document.getElementById("dateend");
+    if (dateValue) {
+        date.style.color = "black";
+    } else {
+        date.style.color = "white";
     }
+}
 </script>
 
 </html>

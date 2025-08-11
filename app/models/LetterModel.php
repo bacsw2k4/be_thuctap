@@ -64,7 +64,7 @@ class LetterModel
     {
         try {
             $this->db->beginTransaction();
-            $this->db->query('UPDATE user set status=?,approvalDate=?where letterId =? ');
+            $this->db->query('UPDATE letter set status=?,approvalDate=? where letterId =? ');
             $approvalDate = date('Y-m-d');
             $this->db->execute([$data['status'], $approvalDate, $id]);
             $this->db->commit();

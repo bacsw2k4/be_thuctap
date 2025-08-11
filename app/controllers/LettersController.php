@@ -1,11 +1,20 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../app/PHPMailer/src/Exception.php';
+require '../app/PHPMailer/src/PHPMailer.php';
+require '../app/PHPMailer/src/SMTP.php';
 class LettersController extends BaseController
 {
     private $letterModel;
+    private $userModel;
     public function __construct()
     {
         parent::__construct();
         $this->letterModel = $this->model('LetterModel');
+        $this->userModel = $this->model('UserModel');
     }
     public function showLetters()
     {
@@ -192,9 +201,10 @@ class LettersController extends BaseController
     public function acceptLetter($id)
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $useridacess = $_SESSION['add_letter'];
             $letterApprove = $this->letterModel->findLettertById($id);
             $data = [
+                'letterId' => $letterApprove['letterId'],
+                'userId' => $letterApprove['userId'],
                 'title' => $letterApprove['title'],
                 'content' => $letterApprove['content'],
                 'status' => "Đã duyệt",
@@ -204,8 +214,41 @@ class LettersController extends BaseController
                 'enddate' => $letterApprove['endDate'],
                 'file' => $letterApprove['attachment'],
             ];
-            if ($_SESSION['user_id'] == $useridacess['userId']) {
+            $useridaccess = $data['roleuser'];
+            if ($_SESSION['user_id'] == $useridaccess) {
                 $this->letterModel->acceptLetter($data, $id);
+                $user = $this->userModel->findUserById($data['userId']);
+                $emailuser = $user['email'];
+                $mail = new PHPMailer(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Encoding = 'base64';
+                try {
+                    // Cấu hình SMTP
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'buihobacprofile.office@gmail.com'; // Gmail của bạn
+                    $mail->Password   = 'zthd dodz dxzv xjcz';        // Mật khẩu ứng dụng Gmail
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Port       = 465;
+                    // Người gửi
+                    $mail->setFrom('youremail@gmail.com', 'Hệ thống quản lý đơn');
+                    // Người nhận
+                    $mail->addAddress($emailuser);
+                    // Nội dung
+                    $mail->isHTML(true);
+                    $mail->Subject = "Đơn của bạn đã được duyệt";
+                    $mail->Body    = "
+                                <h3>Xin chào {$user['fullName']},</h3>
+                                <p>Đơn <b>{$data['title']}</b> đã được duyệt.</p>
+                                <p><b>Thời gian:</b> {$data['startdate']} - {$data['enddate']}</p>
+                                <p><b>Loại đơn:</b> {$data['categoryletter']}</p>
+                                <p><b>Nội dung:</b> {$data['content']}</p>
+        ";
+                    $mail->send();
+                } catch (Exception $e) {
+                    error_log("Lỗi gửi email: {$mail->ErrorInfo}");
+                }
                 $this->redirect('letters/showLetters');
             } else {
                 $this->view('letters/approveletter', $data);
@@ -213,6 +256,78 @@ class LettersController extends BaseController
         } else {
             $letterApprove = $this->letterModel->findLettertById($id);
             $data = [
+                'letterId' => $letterApprove['letterId'],
+                'title' => $letterApprove['title'],
+                'content' => $letterApprove['content'],
+                'status' => $letterApprove['status'],
+                'roleuser' => $letterApprove['approverId'],
+                'categoryletter' => $letterApprove['categoryLetter'],
+                'startdate' => $letterApprove['startDate'],
+                'enddate' => $letterApprove['endDate'],
+                'file' => $letterApprove['attachment'],
+            ];
+            $this->view('letters/approveletter', $data);
+        }
+    }
+    public function cancelLetter($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $letterApprove = $this->letterModel->findLettertById($id);
+            $data = [
+                'letterId' => $letterApprove['letterId'],
+                'userId' => $letterApprove['userId'],
+                'title' => $letterApprove['title'],
+                'content' => $letterApprove['content'],
+                'status' => "Đã duyệt",
+                'roleuser' => $letterApprove['approverId'],
+                'categoryletter' => $letterApprove['categoryLetter'],
+                'startdate' => $letterApprove['startDate'],
+                'enddate' => $letterApprove['endDate'],
+                'file' => $letterApprove['attachment'],
+            ];
+            $useridaccess = $data['roleuser'];
+            if ($_SESSION['user_id'] == $useridaccess) {
+                $this->letterModel->acceptLetter($data, $id);
+                $user = $this->userModel->findUserById($data['userId']);
+                $emailuser = $user['email'];
+                $mail = new PHPMailer(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Encoding = 'base64';
+                try {
+                    // Cấu hình SMTP
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'buihobacprofile.office@gmail.com'; // Gmail của bạn
+                    $mail->Password   = 'zthd dodz dxzv xjcz';        // Mật khẩu ứng dụng Gmail
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Port       = 465;
+                    // Người gửi
+                    $mail->setFrom('youremail@gmail.com', 'Hệ thống quản lý đơn');
+                    // Người nhận
+                    $mail->addAddress($emailuser);
+                    // Nội dung
+                    $mail->isHTML(true);
+                    $mail->Subject = "Đơn của bạn đã được duyệt";
+                    $mail->Body    = "
+                                <h3>Xin chào {$user['fullName']},</h3>
+                                <p>Đơn <b>{$data['title']}</b> đã được duyệt.</p>
+                                <p><b>Thời gian:</b> {$data['startdate']} - {$data['enddate']}</p>
+                                <p><b>Loại đơn:</b> {$data['categoryletter']}</p>
+                                <p><b>Nội dung:</b> {$data['content']}</p>
+        ";
+                    $mail->send();
+                } catch (Exception $e) {
+                    error_log("Lỗi gửi email: {$mail->ErrorInfo}");
+                }
+                $this->redirect('letters/showLetters');
+            } else {
+                $this->view('letters/approveletter', $data);
+            }
+        } else {
+            $letterApprove = $this->letterModel->findLettertById($id);
+            $data = [
+                'letterId' => $letterApprove['letterId'],
                 'title' => $letterApprove['title'],
                 'content' => $letterApprove['content'],
                 'status' => $letterApprove['status'],
