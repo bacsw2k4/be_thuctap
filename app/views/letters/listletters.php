@@ -57,24 +57,85 @@
                         <tbody>
                             <?php $i = 1;
                             foreach ($data['letters'] as $letter): ?>
-                                <tr
+                                <tr class="specialy"
                                     style="<?php echo $letter['status'] == 'Đã hủy' ? 'background-color: #FFB5B5' : ($letter['status'] == 'Chờ duyệt' ? 'background-color: #90FF98' : 'background-color: white'); ?>">
                                     <td><?php echo $i++; ?></td>
-                                    <td><?php echo $letter['fullName']; ?></td>
-                                    <td><?php echo $letter['categoryLetter']; ?></td>
-                                    <td><?php echo $letter['createdAt']; ?></td>
-                                    <td class="bold"><?php echo $letter['status']; ?></td>
-                                    <td><?php echo $letter['approvalDate']; ?></td>
-                                    <td class="bold" style="border-right: none;"><?php echo $letter['content']; ?></td>
+                                    <td><a style="text-decoration: none;"
+                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['fullName']; ?></a>
+                                    </td>
+                                    <td><a style="text-decoration: none;"
+                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['categoryLetter']; ?></a>
+                                    </td>
+                                    <td><a style="text-decoration: none;"
+                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['createdAt']; ?></a>
+                                    </td>
+                                    <td class="bold"><a style="text-decoration: none;"
+                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['status']; ?></a>
+                                    </td>
+                                    <td><a style="text-decoration: none;"
+                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['approvalDate']; ?></a>
+                                    </td>
+                                    <td class="bold" style="border-right: none;"><a style="text-decoration: none;"
+                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['content']; ?></a>
+                                    </td>
                                     <td style="padding: 5px;">
                                         <?php if (($_SESSION['user_category'] == "Quản lý" && $letter['status'] == 'Chờ duyệt') || ($_SESSION['user_category'] == "admin" && $letter['status'] == 'Chờ duyệt')): ?>
-                                            <a
-                                                href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId'] ?>"><button
-                                                    class="btn-approval">Duyệt</button></a>
-                                            <button class="btn-cancel">Hủy</button>
+                                            <button class="btn-approval" type="button"
+                                                data-id="<?php echo $letter['letterId']; ?>">Duyệt</button>
+                                            <button class="btn-cancel" type="button"
+                                                data-id="<?php echo $letter['letterId']; ?>">Hủy</button>
+                                            <?php ?>
+                                            <form method="post"
+                                                action="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>">
+                                                <div class="popup-confirm" style="display: none;"
+                                                    id="popup-confirm-<?php echo $letter['letterId']; ?>">
+                                                    <div class="popup-container">
+                                                        <div class="popup-header">
+                                                            <p style="padding-top: 0px;">Thông báo</p>
+                                                            <img src="./img/Vector.png" alt="" class="exit-btn" width="24px"
+                                                                height="24px">
+                                                        </div>
+                                                        <div class="popup-body2">
+                                                            <div style="position: relative;">
+                                                                <p>Bạn có chắc chắn lưu lại thay đổi ?<span
+                                                                        style="padding-top: 10px;">*</span></p>
+                                                            </div>
+                                                            <div class="button-group2">
+                                                                <div><button type="submit" class="btn-ok">Ok</button></div>
+                                                                <div><button type="button" class="btn-huy">Cancel</button></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <form method="post"
+                                                action="<?php echo BASE_URL; ?>/public/index.php?url=letters/cancelLetter/<?php echo $letter['letterId']; ?>">
+                                                <div class="popup-confirm-cancel"
+                                                    id="popup-confirm-cancel-<?php echo $letter['letterId']; ?>"
+                                                    style="display: none;">
+                                                    <div class="popup-container">
+                                                        <div class="popup-header">
+                                                            <p>Thông báo</p>
+                                                            <img src="./img/Vector.png" alt="" class="exit-btn" width="24px"
+                                                                height="24px">
+                                                        </div>
+                                                        <div class="popup-body">
+                                                            <div style="position: relative;">
+                                                                <p>Lý do hủy đơn <span style="padding-top: 10px;">*</span></p>
+                                                            </div>
+                                                            <div><input name="reason"></div>
+                                                            <div style="position: relative;"><button type="submit"
+                                                                    class="btn-ok">Ok</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         <?php endif; ?>
                                     </td>
+
                                 </tr>
+
                             <?php endforeach; ?>
 
                         </tbody>
@@ -139,16 +200,48 @@
 
 </body>
 <script>
-    function closePopup() {
-        const exitBtn = document.getElementById('exit-btn');
-        const popup = document.getElementById('popup-confirm-cancel');
-        if (exitBtn && popup) {
-            exitBtn.addEventListener('click', function() {
-                popup.style.display = 'none';
-            });
-        }
-    }
-    closePopup();
+    document.querySelectorAll('.btn-approval').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const id = btn.getAttribute('data-id');
+            const popup = document.querySelector(`#popup-confirm-${id}`);
+            popup.style.display = 'block';
+        });
+    });
+    document.querySelectorAll('.btn-ok').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const form = btn.closest('form');
+            if (form) {
+                form.submit();
+            }
+        });
+    });
+
+    document.querySelectorAll('.btn-huy').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.closest('.popup-confirm').style.display = 'none';
+        });
+    });
+
+    document.querySelectorAll('.exit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.closest('.popup-confirm').style.display = 'none';
+        });
+    });
+    //
+    document.querySelectorAll('.btn-cancel').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const id = btn.getAttribute('data-id');
+            const popup = document.querySelector(`#popup-confirm-cancel-${id}`);
+            popup.style.display = 'block';
+        });
+    });
+    document.querySelectorAll('.exit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.closest('.popup-confirm-cancel').style.display = 'none';
+        });
+    });
 </script>
 
 </html>

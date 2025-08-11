@@ -75,4 +75,19 @@ class LetterModel
             return false;
         }
     }
+    public function cancelLetter($data, $id)
+    {
+        try {
+            $this->db->beginTransaction();
+            $this->db->query('UPDATE letter set status=?,approvalDate=? where letterId =? ');
+            $approvalDate = date('Y-m-d');
+            $this->db->execute([$data['status'], $approvalDate, $id]);
+            $this->db->commit();
+            return true;
+        } catch (PDO $err) {
+            $this->db->rollBack();
+            echo "Error";
+            return false;
+        }
+    }
 }

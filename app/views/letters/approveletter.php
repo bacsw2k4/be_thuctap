@@ -84,62 +84,107 @@
                         <div></div>
                     </div>
                     <div class="btn-adduser-group">
-                        <button class="continue" style="cursor: pointer;">Duyệt đơn</button>
-                        <button class="clear" style="cursor: pointer;" id="btn-open">Hủy đơn</button>
+                        <?php if ($data['status'] == "Chờ duyệt"): ?>
+                            <button class="continue" style="cursor: pointer;" id="btn-appro">Duyệt đơn</button>
+                            <button class="clear" style="cursor: pointer;" id="btn-open">Hủy đơn</button>
+                        <?php endif; ?>
                     </div>
-
+                    <div class="popup-confirm" style="display: none;" id="popup-confirm">
+                        <div class="popup-container">
+                            <div class="popup-header">
+                                <p style="padding-top: 0px;">Thông báo</p>
+                                <img src="./img/Vector.png" alt="" class="exit-btn" id="btn-close-2" width="24px"
+                                    height="24px">
+                            </div>
+                            <div class="popup-body2">
+                                <div style="position: relative;">
+                                    <p>Bạn có chắc chắn lưu lại thay đổi ?<span style="padding-top: 10px;">*</span></p>
+                                </div>
+                                <div class="button-group2">
+                                    <div><button type="submit" class="btn-ok">Ok</button></div>
+                                    <div><button type="button" class="btn-huy">Cancel</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup-confirm-cancel" id="popup-confirm-cancel" style="display: none;">
+                        <div class="popup-container">
+                            <div class="popup-header">
+                                <p>Thông báo</p>
+                                <img src="./img/Vector.png" alt="" id="btn-close" class="exit-btn" width="24px"
+                                    height="24px">
+                            </div>
+                            <div class="popup-body">
+                                <div style="position: relative;">
+                                    <p>Lý do hủy đơn <span style="padding-top: 10px;">*</span></p>
+                                </div>
+                                <div><input name="reason"></div>
+                                <div style="position: relative;"><button>Ok</button></div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
-            </div>
-        </div>
-    </div>
-    <div class="popup-confirm-cancel" id="popup-confirm-cancel" style="display: none;">
-        <div class="popup-container">
-            <div class="popup-header">
-                <p>Thông báo</p>
-                <img src="./img/Vector.png" alt="" id="btn-close" class="exit-btn" width="24px" height="24px">
-            </div>
-            <div class="popup-body">
-                <div style="position: relative;">
-                    <p>Lý do hủy đơn <span style="padding-top: 10px;">*</span></p>
-                </div>
-                <div><input name="reason"></div>
-                <div style="position: relative;"><button>Ok</button></div>
             </div>
         </div>
     </div>
 </body>
 <script>
-const btn_open = document.getElementById('btn-open');
-const btn_close = document.getElementById('btn-close');
-const popup_confirm_cancel = document.getElementById('popup-confirm-cancel');
-btn_open.addEventListener('click', (e) => {
-    e.preventDefault();
-    popup_confirm_cancel.style.display = 'block';
+    const btnOpen = document.getElementById('btn-appro');
+    const btnClose = document.getElementById('btn-close-2');
+    const btnCancel = document.querySelector('.btn-huy');
+    const btnOk = document.querySelector('.btn-ok');
+    const popupConfirm = document.getElementById('popup-confirm');
+    const form = document.getElementById('adduser-form');
+    btnOpen.addEventListener('click', (e) => {
+        e.preventDefault();
+        popupConfirm.style.display = 'block';
+    });
 
-});
-btn_close.addEventListener('click', () => {
-    popup_confirm_cancel.style.display = 'none';
-});
 
-function checkDateStart() {
-    const dateValue = document.getElementById("datestart").value;
-    const date = document.getElementById("datestart");
-    if (dateValue) {
-        date.style.color = "black";
-    } else {
-        date.style.color = "white";
+    btnOk.addEventListener('click', () => {
+        form.submit();
+    });
+
+
+    btnClose.addEventListener('click', () => {
+        popupConfirm.style.display = 'none';
+    });
+
+    btnCancel.addEventListener('click', () => {
+        popupConfirm.style.display = 'none';
+    });
+    //
+    const btn_open = document.getElementById('btn-open');
+    const btn_close = document.getElementById('btn-close');
+    const popup_confirm_cancel = document.getElementById('popup-confirm-cancel');
+    btn_open.addEventListener('click', (e) => {
+        e.preventDefault();
+        popup_confirm_cancel.style.display = 'block';
+
+    });
+    btn_close.addEventListener('click', () => {
+        popup_confirm_cancel.style.display = 'none';
+    });
+
+    function checkDateStart() {
+        const dateValue = document.getElementById("datestart").value;
+        const date = document.getElementById("datestart");
+        if (dateValue) {
+            date.style.color = "black";
+        } else {
+            date.style.color = "white";
+        }
     }
-}
 
-function checkDateEnd() {
-    const dateValue = document.getElementById("dateend").value;
-    const date = document.getElementById("dateend");
-    if (dateValue) {
-        date.style.color = "black";
-    } else {
-        date.style.color = "white";
+    function checkDateEnd() {
+        const dateValue = document.getElementById("dateend").value;
+        const date = document.getElementById("dateend");
+        if (dateValue) {
+            date.style.color = "black";
+        } else {
+            date.style.color = "white";
+        }
     }
-}
 </script>
 
 </html>

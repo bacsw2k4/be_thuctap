@@ -168,9 +168,40 @@ class LettersController extends BaseController
                 'file' => $letters['file'],
                 'userdepartment' => $userDepartment
             ];
+            $user = $this->userModel->findUserById($data['roleuser']);
+            $emailuser = $user['email'];
 
             if ($this->letterModel->addLetter($data)) {
                 unset($_SESSION['add_letter']);
+                $mail = new PHPMailer(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Encoding = 'base64';
+                try {
+                    // Cấu hình SMTP
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'buihobacprofile.office@gmail.com'; // Gmail của bạn
+                    $mail->Password   = 'zthd dodz dxzv xjcz';        // Mật khẩu ứng dụng Gmail
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->Port       = 465;
+                    // Người gửi
+                    $mail->setFrom('admin@gmail.com', 'Hệ thống quản lý đơn');
+                    // Người nhận
+                    $mail->addAddress($emailuser);
+                    // Nội dung
+                    $mail->isHTML(true);
+                    $mail->Subject = "Bạn có một đơn mới cần duyệt";
+                    $mail->Body    = "
+                                <h3>Xin chào {$user['fullName']},</h3>
+                                <p>Đơn <b>{$data['title']}</b>.</p>
+                                <p><b>Thời gian:</b> {$data['startdate']} - {$data['enddate']}</p>
+                                <p><b>Loại đơn:</b> {$data['categoryletter']}</p>
+                                <p><b>Nội dung:</b> {$data['content']}</p>";
+                    $mail->send();
+                } catch (Exception $e) {
+                    error_log("Lỗi gửi email: {$mail->ErrorInfo}");
+                }
                 $this->redirect('letters/showLetters');
             } else {
                 echo "Error";
@@ -232,7 +263,7 @@ class LettersController extends BaseController
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                     $mail->Port       = 465;
                     // Người gửi
-                    $mail->setFrom('youremail@gmail.com', 'Hệ thống quản lý đơn');
+                    $mail->setFrom('admin@gmail.com', 'Hệ thống quản lý đơn');
                     // Người nhận
                     $mail->addAddress($emailuser);
                     // Nội dung
@@ -243,8 +274,7 @@ class LettersController extends BaseController
                                 <p>Đơn <b>{$data['title']}</b> đã được duyệt.</p>
                                 <p><b>Thời gian:</b> {$data['startdate']} - {$data['enddate']}</p>
                                 <p><b>Loại đơn:</b> {$data['categoryletter']}</p>
-                                <p><b>Nội dung:</b> {$data['content']}</p>
-        ";
+                                <p><b>Nội dung:</b> {$data['content']}</p>";
                     $mail->send();
                 } catch (Exception $e) {
                     error_log("Lỗi gửi email: {$mail->ErrorInfo}");
@@ -278,51 +308,50 @@ class LettersController extends BaseController
                 'userId' => $letterApprove['userId'],
                 'title' => $letterApprove['title'],
                 'content' => $letterApprove['content'],
-                'status' => "Đã duyệt",
+                'status' => "Đã hủy",
                 'roleuser' => $letterApprove['approverId'],
                 'categoryletter' => $letterApprove['categoryLetter'],
                 'startdate' => $letterApprove['startDate'],
                 'enddate' => $letterApprove['endDate'],
                 'file' => $letterApprove['attachment'],
+                'reason' => $_POST['reason']
             ];
+
             $useridaccess = $data['roleuser'];
             if ($_SESSION['user_id'] == $useridaccess) {
-                $this->letterModel->acceptLetter($data, $id);
+                $this->letterModel->cancelLetter($data, $id);
                 $user = $this->userModel->findUserById($data['userId']);
                 $emailuser = $user['email'];
                 $mail = new PHPMailer(true);
                 $mail->CharSet = 'UTF-8';
                 $mail->Encoding = 'base64';
                 try {
-                    // Cấu hình SMTP
                     $mail->isSMTP();
                     $mail->Host       = 'smtp.gmail.com';
                     $mail->SMTPAuth   = true;
-                    $mail->Username   = 'buihobacprofile.office@gmail.com'; // Gmail của bạn
-                    $mail->Password   = 'zthd dodz dxzv xjcz';        // Mật khẩu ứng dụng Gmail
+                    $mail->Username   = 'buihobacprofile.office@gmail.com';
+                    $mail->Password   = 'zthd dodz dxzv xjcz';
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                     $mail->Port       = 465;
-                    // Người gửi
-                    $mail->setFrom('youremail@gmail.com', 'Hệ thống quản lý đơn');
-                    // Người nhận
+                    $mail->setFrom('admin@gmail.com', 'Hệ thống quản lý đơn');
                     $mail->addAddress($emailuser);
-                    // Nội dung
                     $mail->isHTML(true);
-                    $mail->Subject = "Đơn của bạn đã được duyệt";
+                    $mail->Subject = "Đơn của bạn đã bị từ chối";
                     $mail->Body    = "
-                                <h3>Xin chào {$user['fullName']},</h3>
-                                <p>Đơn <b>{$data['title']}</b> đã được duyệt.</p>
-                                <p><b>Thời gian:</b> {$data['startdate']} - {$data['enddate']}</p>
-                                <p><b>Loại đơn:</b> {$data['categoryletter']}</p>
-                                <p><b>Nội dung:</b> {$data['content']}</p>
-        ";
+                    <h3>Xin chào {$user['fullName']},</h3>
+                    <p>Đơn <b>{$data['title']}</b> đã bị từ chối.</p>
+                    <p>Lý do từ chối :<b>{$data['reason']}</b></p>
+                    <p><b>Thời gian:</b> {$data['startdate']} to {$data['enddate']}</p>
+                    <p><b>Loại đơn:</b> {$data['categoryletter']}</p>
+                    <p><b>Nội dung:</b> {$data['content']}</p>
+                ";
                     $mail->send();
                 } catch (Exception $e) {
                     error_log("Lỗi gửi email: {$mail->ErrorInfo}");
                 }
                 $this->redirect('letters/showLetters');
             } else {
-                $this->view('letters/approveletter', $data);
+                $this->view('letters/listletters', $data);
             }
         } else {
             $letterApprove = $this->letterModel->findLettertById($id);

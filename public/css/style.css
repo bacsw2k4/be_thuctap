@@ -725,3 +725,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-family: 'Noto Sans JP';
     margin-top: 10px;
 }
+
+.specialy td a {
+    text-decoration: none;
+}
