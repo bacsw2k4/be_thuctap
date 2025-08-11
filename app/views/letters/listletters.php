@@ -60,22 +60,23 @@
                                 <tr class="specialy"
                                     style="<?php echo $letter['status'] == 'Đã hủy' ? 'background-color: #FFB5B5' : ($letter['status'] == 'Chờ duyệt' ? 'background-color: #90FF98' : 'background-color: white'); ?>">
                                     <td><?php echo $i++; ?></td>
-                                    <td><a style="text-decoration: none;"
+                                    <td><a style="text-decoration: none; color: black;"
                                             href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['fullName']; ?></a>
                                     </td>
-                                    <td><a style="text-decoration: none;"
+                                    <td><a style="text-decoration: none; color: black;"
                                             href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['categoryLetter']; ?></a>
                                     </td>
-                                    <td><a style="text-decoration: none;"
+                                    <td><a style="text-decoration: none; color: black;"
                                             href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['createdAt']; ?></a>
                                     </td>
-                                    <td class="bold"><a style="text-decoration: none;"
+                                    <td class="bold"><a style="text-decoration: none; color: black;"
                                             href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['status']; ?></a>
                                     </td>
-                                    <td><a style="text-decoration: none;"
+                                    <td><a style="text-decoration: none;color: black;"
                                             href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['approvalDate']; ?></a>
                                     </td>
-                                    <td class="bold" style="border-right: none;"><a style="text-decoration: none;"
+                                    <td class="bold" style="border-right: none;"><a
+                                            style="text-decoration: none; color: black;"
                                             href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['content']; ?></a>
                                     </td>
                                     <td style="padding: 5px;">
