@@ -482,7 +482,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .date-container::after {
-    content: url('./img/calendor.svg');
+    content: url('calendor.svg');
     position: absolute;
     right: 15px;
     top: 30px;

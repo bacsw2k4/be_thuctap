@@ -44,15 +44,15 @@ class LettersController extends BaseController
             $user_department = $_SESSION['user_department'];
             $userDepartment = $this->letterModel->getUserByDepartment($user_department);
             $data = [
-                'userId' => trim($_POST['userId']),
-                'title' => trim($_POST['title']),
+                'userId' => isset($_POST['userId']) ? trim($_POST['userId']) : "",
+                'title' => isset($_POST['title']) ? trim($_POST['title']) : "",
                 'content' => trim($_POST['content']),
                 'roleuser' => trim($_POST['roleuser']),
                 'categoryletter' => trim($_POST['categoryletter']),
                 'startdate' => trim($_POST['datestart']),
                 'enddate' => trim($_POST['dateend']),
                 'status' => 'Chờ duyệt',
-                'file' => trim($_POST['file']),
+                'file' => (isset($_POST['file'])) ? trim($_POST['file']) : "",
                 'title_err' => '',
                 'content_err' => '',
                 'roleuser_err' => '',
@@ -63,29 +63,29 @@ class LettersController extends BaseController
                 'userdepartment' => $userDepartment
             ];
             if (empty($data['title'])) {
-                $data['title_err'] = "※Tiêu đề không được để trống";
+                $data['title_err'] = "<div>※Tiêu đề không được để trống</div>";
             }
             if (empty($data['content'])) {
-                $data['content_err'] = "※Nội dung không được để trống";
+                $data['content_err'] = "<div>※Nội dung không được để trống</div>";
             }
             if (empty($data['roleuser'])) {
-                $data['roleuser_err'] = "※Người duyệt không được để trống";
+                $data['roleuser_err'] = "<div>※Người duyệt không được để trống</div>";
             }
             if (empty($data['categoryletter'])) {
-                $data['categoryletter_err'] = "※Loại đơn không được để trống";
+                $data['categoryletter_err'] = "<div>※Loại đơn không được để trống</div>";
             }
             if (empty($data['startdate'])) {
-                $data['startdate_err'] = "※Ngày bắt đầu không được để trống";
+                $data['startdate_err'] = "<div>※Ngày bắt đầu không được để trống</div>";
             } elseif (!empty($data['startdate']) && ($data['startdate'] > $data['enddate'])) {
-                $data['startdate_err'] = "※Ngày bắt đầu không được lớn hơn ngày kết thúc";
+                $data['startdate_err'] = "<div>※Ngày bắt đầu không được lớn hơn ngày kết thúc</div>";
             }
             if (empty($data['enddate'])) {
-                $data['enddate_err'] = "※Ngày kết thúc không được để trống";
+                $data['enddate_err'] = "<div>※Ngày kết thúc không được để trống</div>";
             } elseif (!empty($data['enddate']) && ($data['startdate'] > $data['enddate'])) {
-                $data['enddate_err'] = "※Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu";
+                $data['enddate_err'] = "<div>※Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu</div>";
             }
             if (!isset($_FILES['file']) || $_FILES['file']['error'] != UPLOAD_ERR_OK) {
-                $data['file_err'] = "※File không được để trống";
+                $data['file_err'] = "<div>※File không được để trống";
             }
             if (
                 empty($data['title_err']) &&

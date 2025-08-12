@@ -48,9 +48,9 @@
                             <label>Người duyệt<span>*</span></label>
                             <select name="roleuser" class="option" style="background-color: #CCCCCC80;" disabled>
                                 <?php foreach ($data['userdepartment'] as $userDepartment): ?>
-                                <option value="<?php echo $userDepartment['userId'] ?>"
-                                    <?php echo ($userDepartment['userId'] == $data['roleuser']) ? 'selected' : ''; ?>>
-                                    <?php echo $userDepartment['fullName'] ?></option>
+                                    <option value="<?php echo $userDepartment['userId'] ?>"
+                                        <?php echo ($userDepartment['userId'] == $data['roleuser']) ? 'selected' : ''; ?>>
+                                        <?php echo $userDepartment['fullName'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -100,7 +100,7 @@
                         <div>
                             <label>Đính kèm<span>*</span></label>
                             <a href="<?php echo BASE_URL; ?>/public/uploads/<?php echo $data['file'] ?>"
-                                style="text-decoration: none;margin-left: 61px;">
+                                style="text-decoration: none;margin-left: 61px;color:#00AAFF">
                                 <?php echo $data['file'] ?></a>
                         </div>
                     </div>
@@ -140,41 +140,41 @@
 
 </body>
 <script>
-const btn_open = document.getElementById('btn-open');
-const btn_close = document.getElementById('btn-close');
-const btn_cancel = document.querySelector('.btn-huy');
-const popup_confirm_cancel = document.getElementById('popup-confirm');
-btn_open.addEventListener('click', (e) => {
-    e.preventDefault();
-    popup_confirm_cancel.style.display = 'block';
+    const btn_open = document.getElementById('btn-open');
+    const btn_close = document.getElementById('btn-close');
+    const btn_cancel = document.querySelector('.btn-huy');
+    const popup_confirm_cancel = document.getElementById('popup-confirm');
+    btn_open.addEventListener('click', (e) => {
+        e.preventDefault();
+        popup_confirm_cancel.style.display = 'block';
 
-});
-btn_close.addEventListener('click', () => {
-    popup_confirm_cancel.style.display = 'none';
-});
-btn_cancel.addEventListener('click', () => {
-    popup_confirm_cancel.style.display = 'none';
-});
+    });
+    btn_close.addEventListener('click', () => {
+        popup_confirm_cancel.style.display = 'none';
+    });
+    btn_cancel.addEventListener('click', () => {
+        popup_confirm_cancel.style.display = 'none';
+    });
 
-function checkDateStart() {
-    const dateValue = document.getElementById("datestart").value;
-    const date = document.getElementById("datestart");
-    if (dateValue) {
-        date.style.color = "black";
-    } else {
-        date.style.color = "white";
+    function checkDateStart() {
+        const dateValue = document.getElementById("datestart").value;
+        const date = document.getElementById("datestart");
+        if (dateValue) {
+            date.style.color = "black";
+        } else {
+            date.style.color = "white";
+        }
     }
-}
 
-function checkDateEnd() {
-    const dateValue = document.getElementById("dateend").value;
-    const date = document.getElementById("dateend");
-    if (dateValue) {
-        date.style.color = "black";
-    } else {
-        date.style.color = "white";
+    function checkDateEnd() {
+        const dateValue = document.getElementById("dateend").value;
+        const date = document.getElementById("dateend");
+        if (dateValue) {
+            date.style.color = "black";
+        } else {
+            date.style.color = "white";
+        }
     }
-}
 </script>
 
 </html>

@@ -60,24 +60,42 @@ class UserModel
     }
     public function addUser($data)
     {
-        $this->db->query('INSERT INTO user(username ,fullName,password,email ,dob,userType,department,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        return $this->db->execute([
-            $data['username'],
-            $data['fullname'],
-            $data['password'],
-            $data['email'],
-            $data['birthdate'],
-            $data['categoryuser'],
-            $data['department'],
-            $data['status']
-        ]);
+        try {
+            $this->db->beginTransaction();
+            $this->db->query('INSERT INTO user(username ,fullName,password,email ,dob,userType,department,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+            $this->db->execute([
+                $data['username'],
+                $data['fullname'],
+                $data['password'],
+                $data['email'],
+                $data['birthdate'],
+                $data['categoryuser'],
+                $data['department'],
+                $data['status']
+            ]);
+            $this->db->commit();
+            return true;
+        } catch (PDO $err) {
+            $this->db->rollBack();
+            echo "Error";
+            return false;
+        }
     }
     public function deleteById($id)
     {
-        $this->db->query('DELETE FROM letter WHERE userId = ?');
-        $this->db->execute([$id]);
-        $this->db->query('DELETE FROM user where userId =?');
-        return $this->db->execute([$id]);
+        try {
+            $this->db->beginTransaction();
+            $this->db->query('DELETE FROM letter WHERE userId = ?');
+            $this->db->execute([$id]);
+            $this->db->query('DELETE FROM user where userId =?');
+            $this->db->execute([$id]);
+            $this->db->commit();
+            return true;
+        } catch (PDO $err) {
+            $this->db->rollBack();
+            echo "Error";
+            return false;
+        }
     }
     public function findUserById($id)
     {
@@ -90,8 +108,8 @@ class UserModel
     {
         try {
             $this->db->beginTransaction();
-            $this->db->query('UPDATE letter set status=?,approvalDate=? where letterId =? ');
-            $this->db->execute([$data['status'], time(), $id]);
+            $this->db->query('UPDATE user set username=?,fullName=?,password=?,email=?,dob=?,userType=?,department=?,status=? where userId=? ');
+            $this->db->execute([$data['username'], $data['fullname'], $data['password'], $data['email'], $data['birthdate'], $data['categoryuser'], $data['department'], $data['status'], $id]);
             $this->db->commit();
             return true;
         } catch (PDO $err) {
@@ -100,14 +118,25 @@ class UserModel
             return false;
         }
     }
+
+
     public function deleteMultipleUsers($ids)
     {
         if (empty($ids)) return false;
         $placeholders = implode(',', array_fill(0, count($ids), '?'));
-        $this->db->query("DELETE FROM letter WHERE userId IN ($placeholders)");
-        $this->db->execute($ids);
-        $this->db->query("DELETE FROM user WHERE userId IN ($placeholders)");
-        $this->db->execute($ids);
-        return $this->db->rowcount() > 0;
+        try {
+            $this->db->beginTransaction();
+            $this->db->query("DELETE FROM letter WHERE userId IN ($placeholders)");
+            $this->db->execute($ids);
+            $this->db->query("DELETE FROM user WHERE userId IN ($placeholders)");
+            $this->db->execute($ids);
+            $this->db->rowcount() > 0;
+            $this->db->commit();
+            return true;
+        } catch (PDO $err) {
+            $this->db->rollBack();
+            echo "Error";
+            return false;
+        }
     }
 }

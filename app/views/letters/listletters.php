@@ -98,8 +98,7 @@
                                                         </div>
                                                         <div class="popup-body2">
                                                             <div style="position: relative;">
-                                                                <p>Bạn có chắc chắn lưu lại thay đổi ?<span
-                                                                        style="padding-top: 10px;">*</span></p>
+                                                                <p>Bạn có chắc chắn lưu lại thay đổi ?</p>
                                                             </div>
                                                             <div class="button-group2">
                                                                 <div><button type="submit" class="btn-ok">Ok</button></div>

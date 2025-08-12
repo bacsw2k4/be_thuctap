@@ -9,21 +9,19 @@ class UsersController extends BaseController
     }
     public function showListUser()
     {
-        $department = $_SESSION['user_department'];
         $category = $_SESSION['user_category'];
         $search = isset($_GET['search']) ? trim($_GET['search']) : null;
         $page = isset($_GET['page']) ? (int)($_GET['page']) : 1;
         $limit = ITEMS_PER_PAGE;
         $offset = ($page - 1) * $limit;
         $page = max($page, 1);
-        $result = $this->userModel->getAllUser($search, $limit, $offset, $department, $category);
+        $result = $this->userModel->getAllUser($search, $limit, $offset);
         $totalPages = ceil($result['total'] / $limit);
         $data = [
             'users' => $result['users'],
             'totalPages' => $totalPages,
             'currentPage' => $page,
             'search' => $search,
-            'department' => $department,
             'category' => $category
         ];
         $this->view('users/listuser', $data);
@@ -51,40 +49,40 @@ class UsersController extends BaseController
                 'status_err' => ""
             ];
             if (empty($data['username'])) {
-                $data['username_err'] = '※Tên đăng nhập không được để trống';
+                $data['username_err'] = '<div>※Tên đăng nhập không được để trống</div>';
             } else {
                 if ($this->userModel->findUserByUserName($data['username'])) {
-                    $data['username_err'] = '※Tên đăng nhập đã tồn tại.Thử lại ! ';
+                    $data['username_err'] = '<div>※Tên đăng nhập đã tồn tại.Thử lại !</div> ';
                 }
             }
             if (empty($data['fullname'])) {
-                $data['fullname_err'] = '※Tên người dùng không được để trống';
+                $data['fullname_err'] = '<div>※Tên người dùng không được để trống</div>';
             }
             if (empty($data['password'])) {
-                $data['password_err'] = '※Mật khẩu không được để trống';
+                $data['password_err'] = '<div>※Mật khẩu không được để trống</div>';
             } else {
                 if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $data['password'])) {
-                    $data['password_err'] = '※Mật khẩu phải ít nhất 8 ký tự gồm chữ thường chữ hoa và ký tự đặc biệt';
+                    $data['password_err'] = '<div>※Mật khẩu phải ít nhất 8 ký tự gồm chữ thường chữ hoa và ký tự đặc biệt</div>';
                 }
             }
             if (empty($data['email'])) {
-                $data['email_err'] = '※Email không được để trống';
+                $data['email_err'] = '<div>※Email không được để trống</div>';
             } else {
                 if ($this->userModel->findUserByEmail($data['email'])) {
-                    $data['email_err'] = '※Email đã tồn tại.Thử lại';
+                    $data['email_err'] = '<div>※Email đã tồn tại.Thử lại</div>';
                 }
             }
             if (empty($data['birthdate'])) {
-                $data['birthdate_err'] = '※Ngày sinh không được để trống';
+                $data['birthdate_err'] = '<div>※Ngày sinh không được để trống</div>';
             }
             if (empty($data['categoryuser'])) {
-                $data["categoryuser_err"] = '※Loại người dùng không được để trống';
+                $data["categoryuser_err"] = '<div>※Loại người dùng không được để trống</div>';
             }
             if (empty($data['department'])) {
-                $data['department_err'] = '※Vui lòng chọn phòng ban';
+                $data['department_err'] = '<div>※Vui lòng chọn phòng ban</div>';
             }
             if (empty($data['status'])) {
-                $data['status_err'] = '※Vui lòng chọn trạng thái';
+                $data['status_err'] = '<div>※Vui lòng chọn trạng thái</div>';
             }
             if (empty($data['username_err']) && empty($data['fullname_err']) && empty($data['password_err']) && empty($data['email_err']) && empty($data['birthdate_err']) && empty($data["categoryuser_err"]) && empty($data["categoryuser_err"]) && empty($data['status_err'])) {
                 $_SESSION['add_user'] = [
@@ -231,7 +229,7 @@ class UsersController extends BaseController
                 'status_err' => ''
             ];
             if (empty($data['user']['fullName'])) {
-                $data['fullname_err'] = '※Tên người dùng không được để trống';
+                $data['fullname_err'] = '<div>※Tên người dùng không được để trống</div>';
             }
             if (!empty($data['user']['password'])) {
                 $data['user']['password'] = password_hash($data['user']['password'], PASSWORD_DEFAULT);
@@ -239,19 +237,19 @@ class UsersController extends BaseController
                 $data['user']['password'] = $data['passwordold'];
             }
             if (empty($data['user']['email'])) {
-                $data['email_err'] = '※Email không được để trống';
+                $data['email_err'] = '<div>※Email không được để trống</div>';
             }
             if (empty($data['user']['dob'])) {
-                $data['birthdate_err'] = '※Ngày sinh không được để trống';
+                $data['birthdate_err'] = '<div>※Ngày sinh không được để trống</div>';
             }
             if (empty($data['user']['userType'])) {
-                $data["categoryuser_err"] = '※Loại người dùng không được để trống';
+                $data["categoryuser_err"] = '<div>※Loại người dùng không được để trống</div>';
             }
             if (empty($data['user']['department'])) {
-                $data['department_err'] = '※Vui lòng chọn phòng ban';
+                $data['department_err'] = '<div>※Vui lòng chọn phòng ban</div>';
             }
             if (empty($data['user']['status'])) {
-                $data['status_err'] = '※Vui lòng chọn trạng thái';
+                $data['status_err'] = '<div>※Vui lòng chọn trạng thái</div>';
             }
             if (empty($data['fullname_err'])  && empty($data['email_err']) && empty($data['birthdate_err']) && empty($data["categoryuser_err"]) && empty($data['status_err'])) {
                 $_SESSION['edit_user'] = [

@@ -15,7 +15,8 @@ class AuthController extends BaseController
                 'username' => trim($_POST['username']),
                 'password' => trim($_POST['password']),
                 'username_err' => '',
-                'password_err' => ''
+                'password_err' => '',
+                'status' => ''
             ];
             $user = $this->authModel->login($data['username'], $data['password']);
             if (empty($data['username'])) {
@@ -30,7 +31,7 @@ class AuthController extends BaseController
                 $data['password_err'] = '※Sai tài khoản hoặc mật khẩu';
             }
 
-            if (empty($data['username_err']) && empty($data['password_err'])) {
+            if (empty($data['username_err']) && empty($data['password_err']) && ($user['status'] == "Đang hoạt động")) {
                 if ($user) {
                     $_SESSION['user_id'] = $user['userId'];
                     $_SESSION['user_username'] = $user['username'];
