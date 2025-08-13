@@ -57,84 +57,84 @@
                         <tbody>
                             <?php $i = 1;
                             foreach ($data['letters'] as $letter): ?>
-                                <tr class="specialy"
-                                    style="<?php echo $letter['status'] == 'Đã hủy' ? 'background-color: #FFB5B5' : ($letter['status'] == 'Chờ duyệt' ? 'background-color: #90FF98' : 'background-color: white'); ?>">
-                                    <td><?php echo $i++; ?></td>
-                                    <td><a style="text-decoration: none; color: black;"
-                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['fullName']; ?></a>
-                                    </td>
-                                    <td><a style="text-decoration: none; color: black;"
-                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['categoryLetter']; ?></a>
-                                    </td>
-                                    <td><a style="text-decoration: none; color: black;"
-                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['createdAt']; ?></a>
-                                    </td>
-                                    <td class="bold"><a style="text-decoration: none; color: black;"
-                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['status']; ?></a>
-                                    </td>
-                                    <td><a style="text-decoration: none;color: black;"
-                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['approvalDate']; ?></a>
-                                    </td>
-                                    <td class="bold" style="border-right: none;"><a
-                                            style="text-decoration: none; color: black;"
-                                            href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['content']; ?></a>
-                                    </td>
-                                    <td style="padding: 5px;">
-                                        <?php if (($_SESSION['user_category'] == "Quản lý" && $letter['status'] == 'Chờ duyệt') || ($_SESSION['user_category'] == "admin" && $letter['status'] == 'Chờ duyệt')): ?>
-                                            <button class="btn-approval" type="button"
-                                                data-id="<?php echo $letter['letterId']; ?>">Duyệt</button>
-                                            <button class="btn-cancel" type="button"
-                                                data-id="<?php echo $letter['letterId']; ?>">Hủy</button>
-                                            <?php ?>
-                                            <form method="post"
-                                                action="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>">
-                                                <div class="popup-confirm" style="display: none;"
-                                                    id="popup-confirm-<?php echo $letter['letterId']; ?>">
-                                                    <div class="popup-container">
-                                                        <div class="popup-header">
-                                                            <p style="padding-top: 0px;">Thông báo</p>
-                                                            <img src="./img/Vector.png" alt="" class="exit-btn" width="24px"
-                                                                height="24px">
-                                                        </div>
-                                                        <div class="popup-body2">
-                                                            <div style="position: relative;">
-                                                                <p>Bạn có chắc chắn lưu lại thay đổi ?</p>
-                                                            </div>
-                                                            <div class="button-group2">
-                                                                <div><button type="submit" class="btn-ok">Ok</button></div>
-                                                                <div><button type="button" class="btn-huy">Cancel</button></div>
-                                                            </div>
-                                                        </div>
+                            <tr class="specialy"
+                                style="<?php echo $letter['status'] == 'Đã hủy' ? 'background-color: #FFB5B5' : ($letter['status'] == 'Chờ duyệt' ? 'background-color: #90FF98' : 'background-color: white'); ?>">
+                                <td><?php echo $i++; ?></td>
+                                <td><a style="text-decoration: none; color: black;"
+                                        href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['fullName']; ?></a>
+                                </td>
+                                <td><a style="text-decoration: none; color: black;"
+                                        href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['categoryLetter']; ?></a>
+                                </td>
+                                <td><a style="text-decoration: none; color: black;"
+                                        href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['createdAt']; ?></a>
+                                </td>
+                                <td class="bold"><a style="text-decoration: none; color: black;"
+                                        href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['status']; ?></a>
+                                </td>
+                                <td><a style="text-decoration: none;color: black;"
+                                        href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['approvalDate']; ?></a>
+                                </td>
+                                <td class="bold" style="border-right: none;"><a
+                                        style="text-decoration: none; color: black;"
+                                        href="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>"><?php echo $letter['content']; ?></a>
+                                </td>
+                                <td style="padding: 5px;">
+                                    <?php if (($_SESSION['user_category'] == "Quản lý" && $letter['status'] == 'Chờ duyệt' && ($_SESSION['user_id']) == $letter['approverId']) || ($_SESSION['user_category'] == "admin" && $letter['status'] == 'Chờ duyệt' && ($_SESSION['user_id']) == $letter['approverId'])): ?>
+                                    <button class="btn-approval" type="button"
+                                        data-id="<?php echo $letter['letterId']; ?>">Duyệt</button>
+                                    <button class="btn-cancel" type="button"
+                                        data-id="<?php echo $letter['letterId']; ?>">Hủy</button>
+                                    <?php ?>
+                                    <form method="post"
+                                        action="<?php echo BASE_URL; ?>/public/index.php?url=letters/acceptLetter/<?php echo $letter['letterId']; ?>">
+                                        <div class="popup-confirm" style="display: none;"
+                                            id="popup-confirm-<?php echo $letter['letterId']; ?>">
+                                            <div class="popup-container">
+                                                <div class="popup-header">
+                                                    <p style="padding-top: 0px;">Thông báo</p>
+                                                    <img src="./img/Vector.png" alt="" class="exit-btn" width="24px"
+                                                        height="24px">
+                                                </div>
+                                                <div class="popup-body2">
+                                                    <div style="position: relative;">
+                                                        <p>Bạn có chắc chắn lưu lại thay đổi ?</p>
+                                                    </div>
+                                                    <div class="button-group2">
+                                                        <div><button type="submit" class="btn-ok">Ok</button></div>
+                                                        <div><button type="button" class="btn-huy">Cancel</button></div>
                                                     </div>
                                                 </div>
-                                            </form>
-                                            <form method="post"
-                                                action="<?php echo BASE_URL; ?>/public/index.php?url=letters/cancelLetter/<?php echo $letter['letterId']; ?>">
-                                                <div class="popup-confirm-cancel"
-                                                    id="popup-confirm-cancel-<?php echo $letter['letterId']; ?>"
-                                                    style="display: none;">
-                                                    <div class="popup-container">
-                                                        <div class="popup-header">
-                                                            <p>Thông báo</p>
-                                                            <img src="./img/Vector.png" alt="" class="exit-btn" width="24px"
-                                                                height="24px">
-                                                        </div>
-                                                        <div class="popup-body">
-                                                            <div style="position: relative;">
-                                                                <p>Lý do hủy đơn <span style="padding-top: 10px;">*</span></p>
-                                                            </div>
-                                                            <div><input name="reason"></div>
-                                                            <div style="position: relative;"><button type="submit"
-                                                                    class="btn-ok">Ok</button>
-                                                            </div>
-                                                        </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form method="post"
+                                        action="<?php echo BASE_URL; ?>/public/index.php?url=letters/cancelLetter/<?php echo $letter['letterId']; ?>">
+                                        <div class="popup-confirm-cancel"
+                                            id="popup-confirm-cancel-<?php echo $letter['letterId']; ?>"
+                                            style="display: none;">
+                                            <div class="popup-container">
+                                                <div class="popup-header">
+                                                    <p>Thông báo</p>
+                                                    <img src="./img/Vector.png" alt="" class="exit-btn" width="24px"
+                                                        height="24px">
+                                                </div>
+                                                <div class="popup-body">
+                                                    <div style="position: relative;">
+                                                        <p>Lý do hủy đơn <span style="padding-top: 10px;">*</span></p>
+                                                    </div>
+                                                    <div><input name="reason"></div>
+                                                    <div style="position: relative;"><button type="submit"
+                                                            class="btn-ok">Ok</button>
                                                     </div>
                                                 </div>
-                                            </form>
-                                        <?php endif; ?>
-                                    </td>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <?php endif; ?>
+                                </td>
 
-                                </tr>
+                            </tr>
 
                             <?php endforeach; ?>
 
@@ -145,12 +145,12 @@
                 <div class="pagination">
                     <div class="back">
                         <?php if ($data['currentPage'] > 1): ?>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
-                            <a
-                                href="?url=letters/showLetters&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                        <a
+                            href="?url=letters/showLetters&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
                         <?php else: ?>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
-                            <a>Previous</a>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                        <a>Previous</a>
                         <?php endif; ?>
                     </div>
                     <?php
@@ -183,12 +183,12 @@
                     ?>
                     <div class="next">
                         <?php if ($currentPage < $totalPages): ?>
-                            <a
-                                href="?url=letters/showLetters&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                        <a
+                            href="?url=letters/showLetters&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
                         <?php else: ?>
-                            <a>Next</a>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                        <a>Next</a>
+                        <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
                         <?php endif; ?>
                     </div>
                 </div>
@@ -200,48 +200,48 @@
 
 </body>
 <script>
-    document.querySelectorAll('.btn-approval').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            const id = btn.getAttribute('data-id');
-            const popup = document.querySelector(`#popup-confirm-${id}`);
-            popup.style.display = 'block';
-        });
+document.querySelectorAll('.btn-approval').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        const id = btn.getAttribute('data-id');
+        const popup = document.querySelector(`#popup-confirm-${id}`);
+        popup.style.display = 'block';
     });
-    document.querySelectorAll('.btn-ok').forEach(btn => {
-        btn.addEventListener('click', e => {
-            const form = btn.closest('form');
-            if (form) {
-                form.submit();
-            }
-        });
+});
+document.querySelectorAll('.btn-ok').forEach(btn => {
+    btn.addEventListener('click', e => {
+        const form = btn.closest('form');
+        if (form) {
+            form.submit();
+        }
     });
+});
 
-    document.querySelectorAll('.btn-huy').forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.closest('.popup-confirm').style.display = 'none';
-        });
+document.querySelectorAll('.btn-huy').forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.closest('.popup-confirm').style.display = 'none';
     });
+});
 
-    document.querySelectorAll('.exit-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.closest('.popup-confirm').style.display = 'none';
-        });
+document.querySelectorAll('.exit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.closest('.popup-confirm').style.display = 'none';
     });
-    //
-    document.querySelectorAll('.btn-cancel').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            const id = btn.getAttribute('data-id');
-            const popup = document.querySelector(`#popup-confirm-cancel-${id}`);
-            popup.style.display = 'block';
-        });
+});
+//
+document.querySelectorAll('.btn-cancel').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        const id = btn.getAttribute('data-id');
+        const popup = document.querySelector(`#popup-confirm-cancel-${id}`);
+        popup.style.display = 'block';
     });
-    document.querySelectorAll('.exit-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.closest('.popup-confirm-cancel').style.display = 'none';
-        });
+});
+document.querySelectorAll('.exit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.closest('.popup-confirm-cancel').style.display = 'none';
     });
+});
 </script>
 
 </html>

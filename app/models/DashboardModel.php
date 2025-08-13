@@ -8,14 +8,32 @@ class DashboardModel
     {
         $this->db = new Database();
     }
-    public function getLetter()
+    public function getLetter($categoryuser, $department)
     {
-        $this->db->query('SELECT u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content FROM `user` AS u JOIN `letter` AS l ON u.userId = l.userId ORDER BY l.createdAt DESC LIMIT 30');
-        $this->db->execute();
-        $letter = $this->db->fetchall();
-        if ($letter) {
-            return $letter;
+        if ($categoryuser === 'admin') {
+            // Admin → xem tất cả
+            $this->db->query("
+            SELECT u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content
+            FROM `user` AS u
+            JOIN `letter` AS l ON u.userId = l.userId
+            ORDER BY l.createdAt DESC
+            LIMIT 30
+        ");
+            $this->db->execute();
+        } else {
+            // User thường → chỉ xem cùng phòng ban
+            $this->db->query("
+            SELECT u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content
+            FROM `user` AS u
+            JOIN `letter` AS l ON u.userId = l.userId
+            WHERE u.department = ?
+            ORDER BY l.createdAt DESC
+            LIMIT 30
+        ");
+            $this->db->execute([$department]);
         }
-        return [];
+
+        $letter = $this->db->fetchAll();
+        return $letter ?: [];
     }
 }

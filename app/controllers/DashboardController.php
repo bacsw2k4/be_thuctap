@@ -9,7 +9,9 @@ class DashboardController extends BaseController
     }
     public function showDashboard()
     {
-        $letters = $this->dashboardModel->getLetter();
+        $categoryuser = $_SESSION['user_category'];
+        $department = $_SESSION['user_department'];
+        $letters = $this->dashboardModel->getLetter($categoryuser, $department);
         $data = [
             'letters' => $letters
         ];

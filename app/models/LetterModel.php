@@ -7,42 +7,76 @@ class LetterModel
     {
         $this->db = new Database();
     }
-    public function getAllLetter($search, $limit, $offset)
+    public function getAllLetter($search, $limit, $offset, $department = null, $category = null)
     {
+        $letters = [];
+        $total = 0;
+
+        // Điều kiện lọc phòng ban nếu không phải admin
+        $deptCondition = "";
+        $paramsDept = [];
+        if ($category !== 'admin' && !empty($department)) {
+            $deptCondition = " AND u.department = ?";
+            $paramsDept[] = $department;
+        }
+
         if ($search) {
-            $this->db->query("SELECT l.letterId ,u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content
+            // SELECT thư có điều kiện tìm kiếm
+            $this->db->query("
+            SELECT l.letterId, u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content,l.approverId
             FROM letter l
             JOIN user u ON l.userId = u.userId
-            WHERE u.fullName LIKE ? or l.categoryLetter LIKE ? or l.content LIKE ?
-            LIMIT ? OFFSET ?");
-            $this->db->execute(["%$search%", "%$search%", "%$search%", $limit, $offset]);
+            WHERE (u.fullName LIKE ? OR l.categoryLetter LIKE ? OR l.content LIKE ?)
+            $deptCondition
+            LIMIT ? OFFSET ?
+        ");
+            $this->db->execute(array_merge(["%$search%", "%$search%", "%$search%"], $paramsDept, [$limit, $offset]));
             $letters = $this->db->fetchAll();
 
-            $this->db->query("SELECT COUNT(*) AS total
+            // COUNT tổng số thư
+            $this->db->query("
+            SELECT COUNT(*) AS total
             FROM letter l
             JOIN user u ON l.userId = u.userId
-            WHERE u.fullName LIKE ? or l.categoryLetter LIKE ? or l.content LIKE ?");
-            $this->db->execute(["%$search%", "%$search%", "%$search%"]);
+            WHERE (u.fullName LIKE ? OR l.categoryLetter LIKE ? OR l.content LIKE ?)
+            $deptCondition
+        ");
+            $this->db->execute(array_merge(["%$search%", "%$search%", "%$search%"], $paramsDept));
             $total = $this->db->fetch()['total'];
         } else {
-            $this->db->query("SELECT l.letterId,u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content
+            // SELECT thư không có tìm kiếm
+            $where = "";
+            if (!empty($deptCondition)) {
+                $where = "WHERE 1=1 $deptCondition";
+            }
+
+            $this->db->query("
+            SELECT l.letterId, u.fullName, l.categoryLetter, l.createdAt, l.status, l.approvalDate, l.content,l.approverId
             FROM letter l
             JOIN user u ON l.userId = u.userId
-            LIMIT ? OFFSET ?");
-            $this->db->execute([$limit, $offset]);
+            $where
+            LIMIT ? OFFSET ?
+        ");
+            $this->db->execute(array_merge($paramsDept, [$limit, $offset]));
             $letters = $this->db->fetchAll();
 
-            $this->db->query("SELECT COUNT(*) AS total
+            // COUNT tổng
+            $this->db->query("
+            SELECT COUNT(*) AS total
             FROM letter l
-            JOIN user u ON l.userId = u.userId");
-            $this->db->execute();
+            JOIN user u ON l.userId = u.userId
+            $where
+        ");
+            $this->db->execute($paramsDept);
             $total = $this->db->fetch()['total'];
         }
+
         return [
             'letters' => $letters,
             'total' => $total
         ];
     }
+
     public function getUserByDepartment($data)
     {
         $this->db->query("SELECT * FROM user where department=? and userType IN(?,?)");

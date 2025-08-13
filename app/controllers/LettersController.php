@@ -25,7 +25,7 @@ class LettersController extends BaseController
         $limit = ITEMS_PER_PAGE;
         $offset = ($page - 1) * $limit;
         $page = max($page, 1);
-        $result = $this->letterModel->getAllLetter($search, $limit, $offset);
+        $result = $this->letterModel->getAllLetter($search, $limit, $offset, $department, $category);
         $totalPages = ceil($result['total'] / $limit);
         $data = [
             'letters' => $result['letters'],

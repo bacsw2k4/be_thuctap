@@ -6,38 +6,59 @@ class UserModel
     {
         $this->db = new Database();
     }
-    public function getAllUser($search, $limit, $offset)
+    public function getAllUser($search, $limit, $offset, $department = null, $category = null)
     {
+        $users = [];
+        $total = 0;
+
+        // Xác định điều kiện lọc phòng ban
+        $deptCondition = "";
+        $params = [];
+        if ($category !== 'admin' && !empty($department)) {
+            $deptCondition = " AND department = ?";
+            $params[] = $department;
+        }
+
         if ($search && is_numeric($search)) {
-            $this->db->query("SELECT * FROM user WHERE userId = ? LIMIT ? OFFSET ?");
-            $this->db->execute([$search, $limit, $offset]);
+            // Tìm theo ID
+            $this->db->query("SELECT * FROM user WHERE userId = ? $deptCondition LIMIT ? OFFSET ?");
+            $this->db->execute(array_merge([$search], $params, [$limit, $offset]));
             $users = $this->db->fetchAll();
 
-            $this->db->query("SELECT COUNT(*) AS total FROM user WHERE userId = ?");
-            $this->db->execute([$search]);
+            $this->db->query("SELECT COUNT(*) AS total FROM user WHERE userId = ? $deptCondition");
+            $this->db->execute(array_merge([$search], $params));
             $total = $this->db->fetch()['total'];
         } elseif ($search) {
-            $this->db->query("SELECT * FROM user WHERE fullName LIKE ? LIMIT ? OFFSET ?");
-            $this->db->execute(["%$search%", $limit, $offset]);
+            // Tìm theo tên
+            $this->db->query("SELECT * FROM user WHERE fullName LIKE ? $deptCondition LIMIT ? OFFSET ?");
+            $this->db->execute(array_merge(["%$search%"], $params, [$limit, $offset]));
             $users = $this->db->fetchAll();
 
-            $this->db->query("SELECT COUNT(*) AS total FROM user WHERE fullName LIKE ?");
-            $this->db->execute(["%$search%"]);
+            $this->db->query("SELECT COUNT(*) AS total FROM user WHERE fullName LIKE ? $deptCondition");
+            $this->db->execute(array_merge(["%$search%"], $params));
             $total = $this->db->fetch()['total'];
         } else {
-            $this->db->query("SELECT * FROM user LIMIT ? OFFSET ?");
-            $this->db->execute([$limit, $offset]);
+            // Không tìm kiếm
+            $condition = "";
+            if (!empty($deptCondition)) {
+                $condition = "WHERE 1=1 $deptCondition";
+            }
+
+            $this->db->query("SELECT * FROM user $condition LIMIT ? OFFSET ?");
+            $this->db->execute(array_merge($params, [$limit, $offset]));
             $users = $this->db->fetchAll();
 
-            $this->db->query("SELECT COUNT(*) AS total FROM user");
-            $this->db->execute();
+            $this->db->query("SELECT COUNT(*) AS total FROM user $condition");
+            $this->db->execute($params);
             $total = $this->db->fetch()['total'];
         }
+
         return [
             'users' => $users,
             'total' => $total
         ];
     }
+
     public function findUserByUserName($usersname)
     {
         $this->db->query('SELECT username FROM user where username=?');
