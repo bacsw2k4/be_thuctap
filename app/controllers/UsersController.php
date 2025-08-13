@@ -123,6 +123,29 @@ class UsersController extends BaseController
             $this->view('users/adduser', $data);
         }
     }
+    public function backAddUser()
+    {
+        $userdata = $_SESSION['add_user'];
+        $data = [
+            'username' => $userdata['username'],
+            'fullname' => $userdata['fullname'],
+            'password' => $userdata['password'],
+            'email' => $userdata['email'],
+            'birthdate' => $userdata['birthdate'],
+            'categoryuser' => $userdata['categoryuser'],
+            'department' => $userdata['department'],
+            'status' => $userdata['status'],
+            'username_err' => '',
+            'fullname_err' => '',
+            'password_err' => '',
+            'email_err' => '',
+            'birthdate_err' => '',
+            'categoryuser_err' => '',
+            'department_err' => '',
+            'status_err' => ''
+        ];
+        $this->view('users/adduser', $data);
+    }
     public function checkAddUser()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

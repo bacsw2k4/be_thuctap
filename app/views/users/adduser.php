@@ -60,8 +60,8 @@
                             <label>Ngày sinh</label>
                             <div class="date-container">
                                 <input id="birthDate" type="date" name="birthDate"
-                                    style="width: 189px; height: 40px;  padding: 5px; color: transparent;"
-                                    onchange="checkDate()" value="<?php echo $data['birthdate'] ?>">
+                                    style="width: 189px; height: 40px;  padding: 5px;" onchange="checkDate()"
+                                    value="<?php echo $data['birthdate'] ?>">
                             </div>
                         </div>
                         <div class="check-empty check-birthdate"><?php echo $data['birthdate_err'] ?></div>
@@ -125,118 +125,131 @@
     </div>
 </body>
 <script>
-    function checkDate() {
-        const dateValue = document.getElementById("birthDate").value;
-        const date = document.getElementById("birthDate");
-        if (dateValue) {
-            date.style.color = "black";
-        } else {
-            date.style.color = "white";
+function checkDate() {
+    const dateValue = document.getElementById("birthDate").value;
+    const date = document.getElementById("birthDate");
+    if (dateValue) {
+        date.style.color = "black";
+    } else {
+        date.style.color = "white";
+    }
+}
+
+
+document.querySelector('.clear').addEventListener('click', (e) => {
+    e.preventDefault();
+    ['username', 'fullname', 'password', 'email', 'birthDate'].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.value = '';
+            input.classList.remove('input-error');
         }
+    });
+    document.querySelectorAll('.check-empty').forEach(el => el.innerHTML = '');
+    document.querySelectorAll('select').forEach(select => select.classList.remove('input-error'));
+});
+
+// Xử lý validate khi submit form
+function toggleDateColor(el) {
+    if (!el.value) {
+        el.classList.add('date-empty');
+    } else {
+        el.classList.remove('date-empty');
+    }
+}
+
+// Gọi khi load trang để set trạng thái ban đầu
+document.addEventListener('DOMContentLoaded', function() {
+    const birthInput = document.getElementById('birthDate');
+    toggleDateColor(birthInput);
+});
+document.getElementById('form-adduser').addEventListener('submit', function(e) {
+    const username = document.getElementById('username');
+    const fullname = document.getElementById('fullname');
+    const password = document.getElementById('password');
+    const email = document.getElementById('email');
+    const birthDate = document.getElementById('birthDate');
+    const selects = document.querySelectorAll('select');
+
+    const check_username = document.querySelector('.check-username');
+    const check_fullname = document.querySelector('.check-fullname');
+    const check_password = document.querySelector('.check-password');
+    const check_email = document.querySelector('.check-email');
+    const check_birthDate = document.querySelector('.check-birthdate');
+
+    let hasError = false;
+    let firstInvalid = null;
+
+    // Reset lỗi cũ
+    [username, fullname, password, email, birthDate].forEach(input => input.classList.remove('input-error'));
+    [check_username, check_fullname, check_password, check_email, check_birthDate].forEach(el => el.innerHTML =
+        '');
+
+    // Kiểm tra các trường input
+    if (!username.value.trim()) {
+        e.preventDefault();
+        check_username.innerHTML = '<div>※Tên đăng nhập không được để trống</div>';
+        username.classList.add('input-error');
+        firstInvalid = firstInvalid || username;
+        hasError = true;
     }
 
-
-    document.querySelector('.clear').addEventListener('click', (e) => {
+    if (!fullname.value.trim()) {
         e.preventDefault();
-        ['username', 'fullname', 'password', 'email', 'birthDate'].forEach(id => {
-            const input = document.getElementById(id);
-            if (input) {
-                input.value = '';
-                input.classList.remove('input-error');
+        check_fullname.innerHTML = '<div>※Tên người dùng không được để trống</div>';
+        fullname.classList.add('input-error');
+        firstInvalid = firstInvalid || fullname;
+        hasError = true;
+    }
+
+    if (!password.value.trim()) {
+        e.preventDefault();
+        check_password.innerHTML = '<div>※Mật khẩu không được để trống</div>';
+        password.classList.add('input-error');
+        firstInvalid = firstInvalid || password;
+        hasError = true;
+    }
+
+    if (!email.value.trim()) {
+        e.preventDefault();
+        check_email.innerHTML = '<div>※Email không được để trống</div>';
+        email.classList.add('input-error');
+        firstInvalid = firstInvalid || email;
+        hasError = true;
+    }
+
+    if (!birthDate.value.trim()) {
+        e.preventDefault();
+        check_birthDate.innerHTML = '<div>※Không được để trống</div>';
+        birthDate.classList.add('input-error');
+        firstInvalid = firstInvalid || birthDate;
+        hasError = true;
+    } else {
+        birthDate.classList.remove('input-error');
+    }
+
+    // Kiểm tra các thẻ select
+    selects.forEach(select => {
+        const errorDiv = select.closest('.form-adduser-group').querySelector('.check-select');
+        if (errorDiv) {
+            errorDiv.innerHTML = '';
+            if (select.value === 'Value') {
+                e.preventDefault();
+                errorDiv.innerHTML = '<div>※Không được để trống</div>';
+                select.classList.add('input-error');
+                firstInvalid = firstInvalid || select;
+                hasError = true;
+            } else {
+                select.classList.remove('input-error');
             }
-        });
-        document.querySelectorAll('.check-empty').forEach(el => el.innerHTML = '');
-        document.querySelectorAll('select').forEach(select => select.classList.remove('input-error'));
+        }
     });
 
-    // Xử lý validate khi submit form
-    document.getElementById('form-adduser').addEventListener('submit', function(e) {
-        const username = document.getElementById('username');
-        const fullname = document.getElementById('fullname');
-        const password = document.getElementById('password');
-        const email = document.getElementById('email');
-        const birthDate = document.getElementById('birthDate');
-        const selects = document.querySelectorAll('select');
 
-        const check_username = document.querySelector('.check-username');
-        const check_fullname = document.querySelector('.check-fullname');
-        const check_password = document.querySelector('.check-password');
-        const check_email = document.querySelector('.check-email');
-        const check_birthDate = document.querySelector('.check-birthdate');
-
-        let hasError = false;
-        let firstInvalid = null;
-
-        // Reset lỗi cũ
-        [username, fullname, password, email, birthDate].forEach(input => input.classList.remove('input-error'));
-        [check_username, check_fullname, check_password, check_email, check_birthDate].forEach(el => el.innerHTML =
-            '');
-
-        // Kiểm tra các trường input
-        if (!username.value.trim()) {
-            e.preventDefault();
-            check_username.innerHTML = '<div>※Tên đăng nhập không được để trống</div>';
-            username.classList.add('input-error');
-            firstInvalid = firstInvalid || username;
-            hasError = true;
-        }
-
-        if (!fullname.value.trim()) {
-            e.preventDefault();
-            check_fullname.innerHTML = '<div>※Tên người dùng không được để trống</div>';
-            fullname.classList.add('input-error');
-            firstInvalid = firstInvalid || fullname;
-            hasError = true;
-        }
-
-        if (!password.value.trim()) {
-            e.preventDefault();
-            check_password.innerHTML = '<div>※Mật khẩu không được để trống</div>';
-            password.classList.add('input-error');
-            firstInvalid = firstInvalid || password;
-            hasError = true;
-        }
-
-        if (!email.value.trim()) {
-            e.preventDefault();
-            check_email.innerHTML = '<div>※Email không được để trống</div>';
-            email.classList.add('input-error');
-            firstInvalid = firstInvalid || email;
-            hasError = true;
-        }
-
-        if (!birthDate.value.trim()) {
-            e.preventDefault();
-            check_birthDate.innerHTML = '<div>※Không được để trống</div>';
-            birthDate.classList.add('input-error');
-            firstInvalid = firstInvalid || birthDate;
-            hasError = true;
-        } else {
-            birthDate.classList.remove('input-error');
-        }
-
-        // Kiểm tra các thẻ select
-        selects.forEach(select => {
-            const errorDiv = select.closest('.form-adduser-group').querySelector('.check-select');
-            if (errorDiv) {
-                errorDiv.innerHTML = '';
-                if (select.value === 'Value') {
-                    e.preventDefault();
-                    errorDiv.innerHTML = '<div>※Không được để trống</div>';
-                    select.classList.add('input-error');
-                    firstInvalid = firstInvalid || select;
-                    hasError = true;
-                } else {
-                    select.classList.remove('input-error');
-                }
-            }
-        });
-
-
-        if (hasError && firstInvalid) {
-            firstInvalid.focus();
-        }
-    });
+    if (hasError && firstInvalid) {
+        firstInvalid.focus();
+    }
+});
 </script>
 
 

@@ -6,7 +6,7 @@ class UserModel
     {
         $this->db = new Database();
     }
-    public function getAllUser($search, $limit, $offset, $department = null, $category = null)
+    public function getAllUser($search, $limit, $offset, $department, $category)
     {
         $users = [];
         $total = 0;

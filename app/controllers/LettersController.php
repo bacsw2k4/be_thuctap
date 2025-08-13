@@ -47,7 +47,7 @@ class LettersController extends BaseController
                 'userId' => isset($_POST['userId']) ? trim($_POST['userId']) : "",
                 'title' => isset($_POST['title']) ? trim($_POST['title']) : "",
                 'content' => trim($_POST['content']),
-                'roleuser' => trim($_POST['roleuser']),
+                'roleuser' => isset($_POST['roleuser']) ? trim($_POST['roleuser']) : "",
                 'categoryletter' => trim($_POST['categoryletter']),
                 'startdate' => trim($_POST['datestart']),
                 'enddate' => trim($_POST['dateend']),
@@ -145,6 +145,31 @@ class LettersController extends BaseController
             ];
             $this->view('letters/addletters', $data);
         }
+    }
+    public function backAddLetter()
+    {
+        $user_department = $_SESSION['user_department'];
+        $userDepartment = $this->letterModel->getUserByDepartment($user_department);
+        $letters = $_SESSION['add_letter'];
+        $data = [
+            'title' => $letters['title'],
+            'content' => $letters['content'],
+            'status' => $letters['status'],
+            'roleuser' => $letters['roleuser'],
+            'categoryletter' => $letters['categoryletter'],
+            'startdate' => $letters['startdate'],
+            'enddate' => $letters['enddate'],
+            'file' => $letters['file'],
+            'title_err' => '',
+            'content_err' => '',
+            'roleuser_err' => '',
+            'categoryletter_err' => '',
+            'startdate_err' => '',
+            'enddate_err' => '',
+            'file_err' => '',
+            'userdepartment' => $userDepartment
+        ];
+        $this->view('letters/addletters', $data);
     }
     public function checkAddLetter()
     {
