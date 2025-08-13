@@ -286,7 +286,7 @@ td {
     justify-content: center;
     align-items: center;
     gap: 7px;
-    opacity: 0.6;
+    /* opacity: 0.6; */
 
 }
 

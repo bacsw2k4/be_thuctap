@@ -158,16 +158,18 @@
 
                 </div>
                 <div class="pagination">
-                    <div class="back">
-                        <?php if ($data['currentPage'] > 1): ?>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
-                            <a
-                                href="?url=users/showListUser&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
-                        <?php else: ?>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
-                            <a>Previous</a>
-                        <?php endif; ?>
-                    </div>
+                    <?php if ($data['totalPages'] > 1): ?>
+                        <div class="back">
+                            <?php if ($data['currentPage'] > 1): ?>
+                                <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                                <a
+                                    href="?url=users/showListUser&page=<?php echo $data['currentPage'] - 1; ?><?php echo !empty($data['search']) ? '&search=' . urlencode($data['search']) : ''; ?>">Previous</a>
+                            <?php else: ?>
+                                <img src="<?php echo BASE_URL; ?>/public/img/arrowleft.svg">
+                                <a>Previous</a>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                     <?php
                     $currentPage = $data['currentPage'];
                     $totalPages = $data['totalPages'];
@@ -196,16 +198,18 @@
                         echo '<div class="page"><a href="?url=users/showListUser&page=' . $totalPages . ($search ? '&search=' . urlencode($search) : '') . '">' . $totalPages . '</a></div>';
                     }
                     ?>
-                    <div class="next">
-                        <?php if ($currentPage < $totalPages): ?>
-                            <a
-                                href="?url=users/showListUser&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
-                        <?php else: ?>
-                            <a>Next</a>
-                            <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
-                        <?php endif; ?>
-                    </div>
+                    <?php if ($data['totalPages'] > 1): ?>
+                        <div class="next">
+                            <?php if ($currentPage < $totalPages): ?>
+                                <a
+                                    href="?url=users/showListUser&page=<?php echo $currentPage + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">Next</a>
+                                <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                            <?php else: ?>
+                                <a>Next</a>
+                                <img src="<?php echo BASE_URL; ?>/public/img/arrowright.svg">
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
